@@ -1,0 +1,76 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import SectionHead from '../components/SectionHead.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { contact } from '../lib/settings';
+import teaching from '../assets/photos/class-teaching.jpg';
+import discussion from '../assets/photos/class-discussion.jpg';
+import explaining from '../assets/photos/class-explaining.jpg';
+const join = contact.whatsappUrl("Hi Kyle! I'd like to join a group class in Istanbul. My name is ... and my English level is ...");
+const details = [
+  ['clock', 'When', 'Daily classes · ask for the schedule'],
+  ['map-pin', 'Where', 'In person, Istanbul'],
+  ['users', 'Group size', 'Small groups · ask for current size'],
+  ['tag', 'Price', 'Price on request'],
+  ['target', 'Level', 'A2 and above'],
+  ['chat', 'Format', 'Conversation, games & real-life topics'],
+];
+---
+<Base title="Group English classes in Istanbul" description="Small-group English conversation classes in person in Istanbul with Kyle. Speak more, get friendly corrections and make new friends. Message on WhatsApp to join.">
+  <section class="section section--inverse gc-hero">
+    <div class="container gc-hero__inner">
+      <div class="gc-hero__text">
+        <p class="t-overline">In person · Istanbul</p>
+        <h1 class="t-display-l">Small-group English conversation classes</h1>
+        <p class="t-body-l c-secondary">Relaxed, real conversation with other learners. Speak more, get friendly corrections, and make new friends, in person in Istanbul.</p>
+        <div><a class="btn btn--accent btn--lg" href={join} target="_blank" rel="noopener"><Icon name="whatsapp" /><span>Message me on WhatsApp to join</span></a></div>
+      </div>
+      <div class="photo gc-hero__photo"><Image src={teaching} alt="Kyle teaching a group class in Istanbul" widths={[480, 640]} sizes="(max-width: 900px) 100vw, 560px" loading="eager" /></div>
+    </div>
+  </section>
+
+  <section class="section section--surface">
+    <div class="container">
+      <SectionHead title="Class details" lead="Group size, schedule and price change often. Message me on WhatsApp for the latest details." />
+      <ul class="details" role="list">
+        {details.map(([icon, k, v]) => <li class="card"><span class="icon-badge"><Icon name={icon} /></span><span><span class="t-body-s c-secondary">{k}</span><br /><span class="t-label-l">{v}</span></span></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container expect">
+      <div>
+        <SectionHead title="What a class looks like" />
+        <ul class="checklist t-body-l">
+          <li><Icon name="check" />A warm-up question to get everyone talking</li>
+          <li><Icon name="check" />A real-life topic: travel, work, food, culture</li>
+          <li><Icon name="check" />Useful phrases on the board, practiced together</li>
+          <li><Icon name="check" />Friendly corrections and new words to take home</li>
+        </ul>
+      </div>
+      <div class="expect__photos">
+        <div class="photo"><Image src={explaining} alt="Kyle explaining phrases on the chalkboard" widths={[360, 540]} sizes="(max-width: 900px) 50vw, 300px" /></div>
+        <div class="photo"><Image src={discussion} alt="Students chatting during a group class" widths={[360, 540]} sizes="(max-width: 900px) 50vw, 300px" /></div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand title="Want to join a group?" text="Send me a message with your name and level. I'll reply with the next available spot." label="Message me on WhatsApp" href={join} whatsapp />
+</Base>
+<style>
+  .gc-hero__inner { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 5vw, 64px); align-items: center; }
+  .gc-hero__text { display: grid; gap: 20px; }
+  .gc-hero__photo { aspect-ratio: 560 / 420; }
+  @media (max-width: 900px) { .gc-hero__inner { grid-template-columns: 1fr; } }
+  .details { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .details li { display: flex; gap: 14px; align-items: center; }
+  @media (max-width: 900px) { .details { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .details { grid-template-columns: 1fr; } }
+  .expect { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 5vw, 64px); align-items: center; }
+  .expect__photos { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .expect__photos .photo { aspect-ratio: 300 / 380; }
+  @media (max-width: 900px) { .expect { grid-template-columns: 1fr; } }
+</style>

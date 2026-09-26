@@ -1,0 +1,13 @@
+---
+import Icon from './Icon.astro';
+import { contact } from '../lib/settings';
+---
+<aside aria-label="Chat on WhatsApp"><a class="wa-float" href={contact.whatsappUrl('Hi Kyle! I found your website and have a question about English lessons.')} target="_blank" rel="noopener">
+  <Icon name="whatsapp" size={24} /><span class="wa-float__label">Chat on WhatsApp</span><span class="sr-only">(opens WhatsApp)</span>
+</a></aside>
+<style>
+  .wa-float { position: fixed; right: 24px; bottom: 24px; z-index: 40; display: inline-flex; align-items: center; gap: 10px; background: var(--ff-whatsapp); color: #0f1433; text-decoration: none; font: 600 15px/20px var(--ff-font-body); padding: 14px 20px 14px 16px; border-radius: var(--ff-radius-full); box-shadow: var(--ff-shadow-pop-sm); transition: transform .15s, box-shadow .15s; }
+  .wa-float:hover { transform: translate(-1px,-1px); box-shadow: var(--ff-shadow-pop); }
+  @media (max-width: 640px) { .wa-float { right: 16px; bottom: 16px; padding: 14px; } .wa-float__label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); } }
+  @media print { .wa-float { display: none; } }
+</style>

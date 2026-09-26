@@ -1,0 +1,19 @@
+---
+import Newsletter from './Newsletter.astro';
+import Icon from './Icon.astro';
+interface Props { source: 'blog' | 'resources'; items: string[] }
+const { source, items } = Astro.props;
+---
+<div class="soon">
+  <span class="tag tag--accent-solid">Coming soon</span>
+  <h2 class="t-h2">{source === 'blog' ? 'The first posts are on the way' : 'Free worksheets are on the way'}</h2>
+  <p class="t-body-l c-secondary">Leave your email and I'll let you know when they're ready.</p>
+  <Newsletter source={source} />
+  <ul class="soon__list" role="list">{items.map((i) => <li><Icon name="chevron-right" size={18} />{i}</li>)}</ul>
+</div>
+<style>
+  .soon { display: grid; gap: 16px; justify-items: start; background: var(--ff-bg-canvas); border: 1px solid var(--ff-border-default); border-radius: var(--ff-radius-xl); padding: clamp(24px, 4vw, 48px); max-width: 820px; box-shadow: var(--ff-shadow-sm); }
+  .soon__list { display: grid; gap: 8px; margin-top: 8px; color: var(--ff-text-secondary); }
+  .soon__list li { display: flex; gap: 8px; align-items: center; }
+  .soon__list :global(svg) { color: var(--ff-icon-accent); }
+</style>

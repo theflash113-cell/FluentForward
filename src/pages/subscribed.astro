@@ -1,0 +1,12 @@
+---
+import Base from '../layouts/Base.astro';
+import Button from '../components/Button.astro';
+---
+<Base title="You're on the list" description="Thanks for signing up." noindex>
+  <section class="section section--surface"><div class="container" style="display:grid;gap:20px;justify-items:start;max-width:720px">
+    <p class="t-overline">Thanks!</p>
+    <h1 class="t-display-l">You're on the list.</h1>
+    <p class="t-body-l c-secondary">I'll email you when new posts and free resources are ready.</p>
+    <Button href="/" variant="primary">Back to home</Button>
+  </div></section>
+</Base>

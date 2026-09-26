@@ -1,0 +1,65 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import SectionHead from '../components/SectionHead.astro';
+import PricingCards from '../components/PricingCards.astro';
+import BookingForm from '../components/BookingForm.astro';
+import { prices, booking } from '../lib/settings';
+const [p5, p10] = prices.packs;
+const faqs = [
+  ['What happens in the free intro call?', `We meet for ${prices.intro_call_minutes} minutes, check your level, talk about your goals and plan your first lesson. No payment needed.`],
+  ['Where do lessons happen?', 'Online, by video call. You get the link in your calendar invite. Group classes happen in person in Istanbul.'],
+  ['How do I pay?', "After your free intro call, I'll send you a payment link or bank details for your lesson or package. Nothing is charged when you book."],
+  ['Can I change a lesson time?', `Yes. Reschedule or cancel for free up to ${booking.cancellation_notice_hours} hours before the lesson. Later changes count as a used lesson.`],
+  ['How long can I use a lesson pack?', `The 5-lesson pack is valid for ${p5.months} months and the 10-lesson pack for ${p10.months} months from purchase. Unused lessons can't be refunded, but if something big comes up, just message me.`],
+];
+---
+<Base title="Pricing & booking" description={`Simple pricing: ${prices.singleLabel} per ${prices.lesson_minutes}-minute lesson, or save with 5- and 10-lesson packs. Book a free ${prices.intro_call_minutes}-minute intro call in 4 quick steps.`}>
+  <section class="section section--surface">
+    <div class="container">
+      <SectionHead as="h1" size="display" overline="Pricing" title="Simple pricing. Real progress." lead={`Every lesson is 1-to-1, online and ${prices.lesson_minutes} minutes. Your first step is a free ${prices.intro_call_minutes}-minute intro call.`} />
+      <PricingCards headingLevel={2} />
+      <ul class="includes" role="list">
+        <li class="t-label-m">Every lesson includes:</li>
+        <li><Icon name="target" size={18} />A plan built around your goals</li>
+        <li><Icon name="pencil" size={18} />Lesson notes &amp; new vocabulary</li>
+        <li><Icon name="tag" size={18} />Pay after your free intro call</li>
+        <li><Icon name="calendar" size={18} />Free rescheduling with {booking.cancellation_notice_hours}h notice</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="book">
+    <div class="container">
+      <SectionHead overline="Book your free intro call" title="Book in 4 quick steps" lead={`Tell me what you need, then pick a time. Kyle is based in ${booking.teacher_timezone}; times show in your time zone. No payment needed to book the intro call.`} />
+      <BookingForm />
+    </div>
+  </section>
+
+  <section class="section section--surface">
+    <div class="container faq">
+      <SectionHead overline="Questions" title="Frequently asked questions" />
+      <div class="faq__list">
+        {faqs.map(([q, a], i) => (
+          <details open={i === 0}><summary class="t-label-l">{q}<Icon name="plus" size={20} /></summary><p class="t-body-m c-secondary">{a}</p></details>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+<script>
+  if (new URLSearchParams(location.search).has('focus') && !location.hash) document.getElementById('book')?.scrollIntoView();
+</script>
+<style>
+  .includes { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 28px; margin-top: 40px; color: var(--ff-text-secondary); font: 400 15px/20px var(--ff-font-body); }
+  .includes li { display: flex; align-items: center; gap: 8px; }
+  .includes :global(svg) { color: var(--ff-icon-brand); }
+  .faq { max-width: 880px; }
+  .faq__list { display: grid; gap: 12px; }
+  details { background: var(--ff-bg-canvas); border: 1px solid var(--ff-border-default); border-radius: var(--ff-radius-lg); padding: 0 24px; }
+  summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 20px 0; }
+  summary::-webkit-details-marker { display: none; }
+  summary :global(svg) { color: var(--ff-icon-brand); transition: rotate .2s; flex: none; }
+  details[open] summary :global(svg) { rotate: 45deg; }
+  details p { padding-bottom: 20px; }
+</style>

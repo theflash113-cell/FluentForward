@@ -1,0 +1,36 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import SectionHead from '../components/SectionHead.astro';
+import { contact } from '../lib/settings';
+const channels = [
+  { icon: 'whatsapp', name: 'WhatsApp', text: 'Fastest reply. Great for quick questions and group classes.', value: contact.whatsapp_display, href: contact.whatsappUrl('Hi Kyle! I have a question about English lessons.'), cta: 'Chat on WhatsApp', ext: true, cls: 'btn--whatsapp' },
+  { icon: 'mail', name: 'Email', text: 'Best for detailed questions and companies.', value: contact.email, href: contact.emailUrl, cta: 'Send an email', ext: false, cls: 'btn--primary' },
+  { icon: 'instagram', name: 'Instagram', text: 'Say hi and see daily English tips.', value: `@${contact.instagram_handle}`, href: contact.instagramDmUrl, cta: 'Send a DM', ext: true, cls: 'btn--secondary' },
+];
+---
+<Base title="Contact" description={`Contact Kyle at Fluent Forward on WhatsApp (${contact.whatsapp_display}), by email (${contact.email}) or on Instagram @${contact.instagram_handle}.`}>
+  <section class="section section--surface">
+    <div class="container">
+      <SectionHead as="h1" size="display" overline="Contact" title="Let's talk" lead={`Questions about lessons, group classes in Istanbul or anything else? Choose the easiest way for you. I usually reply ${contact.reply_time}.`} />
+      <ul class="channels" role="list">
+        {channels.map((c) => (
+          <li class="card channel">
+            <span class="icon-badge"><Icon name={c.icon} /></span>
+            <h2 class="t-h3">{c.name}</h2>
+            <p class="t-body-m c-secondary">{c.text}</p>
+            <p class="t-label-l channel__value">{c.value}</p>
+            <a class={`btn ${c.cls}`} href={c.href} target={c.ext ? '_blank' : undefined} rel={c.ext ? 'noopener' : undefined}><span>{c.cta}</span><Icon name="arrow-right" /></a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Base>
+<style>
+  .channels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  @media (max-width: 900px) { .channels { grid-template-columns: 1fr; max-width: 520px; } }
+  .channel { display: grid; gap: 12px; align-content: start; padding: 32px; border-radius: var(--ff-radius-xl); }
+  .channel .btn { justify-self: start; margin-top: 8px; }
+  .channel__value { word-break: break-word; }
+</style>

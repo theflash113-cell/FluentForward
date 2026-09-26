@@ -1,0 +1,70 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import Button from './Button.astro';
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const links = [
+  { href: '/about', label: 'About' },
+  { href: '/pricing', label: 'Pricing' },
+  { href: '/group-classes', label: 'Group classes' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/contact', label: 'Contact' },
+];
+---
+<header class="nav">
+  <div class="container nav__inner">
+    <a href="/" class="nav__logo" aria-label="Fluent Forward home"><Logo height={36} /></a>
+    <nav aria-label="Main" class="nav__links" id="nav-menu">
+      <ul role="list">
+        {links.map((l) => (
+          <li><a href={l.href} aria-current={path.startsWith(l.href) ? 'page' : undefined}>{l.label}</a></li>
+        ))}
+      </ul>
+      <Button href="/pricing#book" variant="accent" class="nav__cta">Book a free intro call</Button>
+    </nav>
+    <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
+      <span class="sr-only">Menu</span>
+      <Icon name="menu" class="nav__icon-open" /><Icon name="x" class="nav__icon-close" />
+    </button>
+  </div>
+</header>
+
+<style>
+  .nav { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,.96); backdrop-filter: saturate(1.4) blur(8px); border-bottom: 1px solid var(--ff-border-default); }
+  .nav__inner { display: flex; align-items: center; justify-content: space-between; min-height: 80px; gap: 24px; }
+  .nav__logo { display: flex; flex: none; }
+  .nav__links { display: flex; align-items: center; gap: 40px; }
+  .nav__links ul { display: flex; gap: 32px; margin: 0; }
+  .nav__links a:not(.btn) { font: 600 16px/20px var(--ff-font-body); color: var(--ff-text-primary); text-decoration: none; padding: 8px 0; border-bottom: 2px solid transparent; }
+  .nav__links a:not(.btn):hover { color: var(--ff-text-brand); }
+  .nav__links a[aria-current='page'] { color: var(--ff-text-brand); border-bottom-color: var(--ff-border-brand); }
+  .nav__toggle { display: none; background: none; border: 0; padding: 10px; margin-right: -10px; cursor: pointer; color: var(--ff-text-primary); }
+  .nav__toggle :global(.nav__icon-close) { display: none; }
+  @media (max-width: 1080px) {
+    .nav__links ul { gap: 20px; }
+    .nav__links { gap: 24px; }
+  }
+  @media (max-width: 960px) {
+    .nav__inner { min-height: 68px; }
+    .nav__toggle { display: block; }
+    .nav__links { display: none; position: absolute; inset: 100% 0 auto 0; background: #fff; border-bottom: 1px solid var(--ff-border-default); flex-direction: column; align-items: stretch; gap: 16px; padding: 16px var(--ff-gutter) 24px; box-shadow: var(--ff-shadow-lg); }
+    .nav__links ul { flex-direction: column; gap: 0; }
+    .nav__links a:not(.btn) { display: block; padding: 14px 0; border-bottom: 1px solid var(--ff-border-default); font-size: 18px; }
+    .nav__links a[aria-current='page'] { border-bottom-color: var(--ff-border-default); }
+    .nav.is-open .nav__links { display: flex; }
+    .nav.is-open :global(.nav__icon-open) { display: none; }
+    .nav.is-open :global(.nav__icon-close) { display: block; }
+  }
+</style>
+
+<script>
+  const nav = document.querySelector('.nav');
+  const toggle = nav?.querySelector<HTMLButtonElement>('.nav__toggle');
+  toggle?.addEventListener('click', () => {
+    const open = nav!.classList.toggle('is-open');
+    toggle.setAttribute('aria-expanded', String(open));
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && nav?.classList.contains('is-open')) { nav.classList.remove('is-open'); toggle?.setAttribute('aria-expanded', 'false'); toggle?.focus(); }
+  });
+</script>

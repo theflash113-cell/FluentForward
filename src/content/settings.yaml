@@ -1,0 +1,127 @@
+# ─────────────────────────────────────────────────────────────
+#  FLUENT FORWARD · SITE SETTINGS
+#  This is the one file you edit to change prices, contact
+#  details, services, reviews and links across the whole site.
+#
+#  HOW TO EDIT ON GITHUB
+#  1. Click the pencil icon (Edit this file) at the top right.
+#  2. Change only the text AFTER the colon ( : ).
+#  3. Keep the spacing at the start of each line exactly as it is.
+#  4. Text with a colon or # inside must stay in "quotes".
+#  5. Click "Commit changes". The site updates in about 1 minute.
+# ─────────────────────────────────────────────────────────────
+
+
+# ── PRICES ───────────────────────────────────────────────────
+# Numbers only (no $ sign). Per-lesson prices and savings are
+# calculated automatically everywhere on the site.
+prices:
+  currency_symbol: "$"
+  lesson_minutes: 50          # length of one lesson
+  single: 13                  # price of one lesson
+  pack_5: 60                  # price of the 5-lesson pack
+  pack_10: 110                # price of the 10-lesson pack
+  pack_5_valid_months: 3      # how long the 5-pack can be used
+  pack_10_valid_months: 6     # how long the 10-pack can be used
+  intro_call_minutes: 15      # length of the free intro call
+
+
+# ── CONTACT ──────────────────────────────────────────────────
+contact:
+  # WhatsApp number: digits only, with country code, no + or spaces
+  whatsapp_number: "15165800740"
+  # How the number is shown to visitors
+  whatsapp_display: "+1 (516) 580-0740"
+  email: "kyledglutz@gmail.com"
+  instagram_handle: "learnenglishwithkyle"   # without the @
+  youtube_intro_video_id: "QG3bJ-1hy8Q"      # the part after watch?v=
+  preply_profile_url: "https://preply.in/KYLE6EN39287091102?ts=17903411"
+  reply_time: "within 24 hours"
+
+
+# ── BOOKING ──────────────────────────────────────────────────
+booking:
+  # Paste your Google Calendar appointment booking page link here
+  # (Google Calendar > Appointment schedule > Share > Booking page link).
+  # While this is empty, step 4 shows a WhatsApp button instead.
+  google_calendar_link: ""
+  # Free English level test students can take if unsure of their level
+  level_test_link: "https://preply.com/en/language-tests/english"
+  # Hours of notice needed to reschedule or cancel for free
+  cancellation_notice_hours: 12
+  # Minutes before a late student's lesson counts as missed
+  late_arrival_minutes: 15
+  # Your time zone, shown on the booking page
+  teacher_timezone: "Istanbul (UTC+3)"
+
+
+# ── ANALYTICS ────────────────────────────────────────────────
+# Cloudflare Web Analytics token (Web Analytics > Manage site).
+# Leave empty to turn stats off.
+analytics:
+  cloudflare_token: ""
+
+
+# ── HIGHLIGHTS (small badges under the homepage headline) ────
+highlights:
+  preply_rating: "4.8"
+  years_teaching: "2+"
+
+
+# ── SERVICES ─────────────────────────────────────────────────
+# Shown on the homepage and as the choices in booking step 1.
+# icon options: briefcase, plane, book, sprout, audio-lines, mic,
+#               chat, target, star, pencil, lightbulb, calendar
+# "booking: false" hides a service from the booking choices.
+services:
+  - id: business
+    name: "Business English"
+    short: "Meetings, emails, presentations, interviews"
+    description: "Meetings, emails, presentations and interviews: the English you need at work."
+    icon: briefcase
+  - id: travel
+    name: "Travel English"
+    short: "Airports, hotels, restaurants, small talk"
+    description: "Airports, hotels, restaurants and small talk, so you feel ready anywhere."
+    icon: plane
+  - id: literature
+    name: "English Literature"
+    short: "Read and discuss books, stories and poems"
+    description: "Read real books, stories and poems together to grow your vocabulary and understanding."
+    icon: book
+  - id: beginner
+    name: "Beginner English"
+    short: "Start from zero, step by step"
+    description: "Start from zero with clear, patient, step-by-step lessons that build real confidence."
+    icon: sprout
+  - id: accent
+    name: "Accent Reduction"
+    short: "Sound clearer and more natural"
+    description: "Sound clearer and more natural with focused work on rhythm, linking and American sounds."
+    icon: audio-lines
+  - id: pronunciation
+    name: "Pronunciation Coaching"
+    short: "Sounds, word stress and intonation"
+    description: "Master tricky sounds, word stress and intonation so people understand you the first time."
+    icon: mic
+  - id: conversation
+    name: "Conversation Practice"
+    short: "Speak more, freeze less"
+    description: "Build fluency and confidence with real conversations on topics you care about."
+    icon: chat
+  - id: exams
+    name: "Exam Prep"
+    short: "IELTS, TOEFL and Cambridge"
+    description: "Strategies and practice for IELTS, TOEFL and Cambridge exams."
+    icon: target
+
+
+# ── REVIEWS ──────────────────────────────────────────────────
+# Only real reviews, copied word for word, with permission.
+# To add one, copy a block (from "- name" down) and edit it.
+reviews:
+  - name: "Anmoldeep"
+    source: "Preply student"
+    stars: 5
+    date: "August 18, 2026"
+    quote: "Professional, punctual, and kind. Kyle seeks to understand the learning needs and get to know the student. He is attentive in noticing which ways of content assimilation work best for me and diligently corrects mistakes, yet does so in a light and gentle manner - which helps to build more confidence in the learning process while I feel secure."

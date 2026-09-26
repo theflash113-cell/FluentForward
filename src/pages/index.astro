@@ -1,0 +1,307 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Button from '../components/Button.astro';
+import Icon from '../components/Icon.astro';
+import SectionHead from '../components/SectionHead.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import PricingCards from '../components/PricingCards.astro';
+import ReviewCard from '../components/ReviewCard.astro';
+import VideoEmbed from '../components/VideoEmbed.astro';
+import { services, bookingServices, levels, prices, highlights, reviews, contact, booking } from '../lib/settings';
+
+import headshot from '../assets/photos/kyle-headshot.jpg';
+import teaching from '../assets/photos/class-teaching.jpg';
+import explaining from '../assets/photos/class-explaining.jpg';
+import discussion from '../assets/photos/class-discussion.jpg';
+import portrait from '../assets/photos/class-portrait.jpg';
+import travel from '../assets/photos/interest-travel.jpg';
+import food from '../assets/photos/interest-food.jpg';
+import sport from '../assets/photos/interest-sport.jpg';
+import work from '../assets/photos/interest-work.jpg';
+import city from '../assets/photos/interest-city.jpg';
+import outdoors from '../assets/photos/interest-outdoors.jpg';
+
+const interests = [
+  { img: travel, label: 'Travel', alt: 'Machu Picchu mountain ruins under clouds' },
+  { img: food, label: 'Food & cooking', alt: 'Hands chopping fresh herbs on a wooden board' },
+  { img: sport, label: 'Sport', alt: 'A swimmer doing front crawl in a pool lane' },
+  { img: work, label: 'Work & business', alt: 'Hands typing on a laptop at a desk' },
+  { img: city, label: 'City life', alt: 'A busy underground train platform' },
+  { img: outdoors, label: 'Nature & outdoors', alt: 'A hiker walking a mountain trail in the clouds' },
+];
+const review = reviews[0];
+---
+<Base
+  title="Fluent Forward · 1-to-1 English lessons with Kyle"
+  description={`Speak English with confidence. 1-to-1 online lessons with Kyle, a native speaker from New York: business, travel, pronunciation and more. ${prices.singleLabel} per ${prices.lesson_minutes} minutes. Free ${prices.intro_call_minutes}-minute intro call.`}
+>
+  <!-- Hero · Figma: Home › Hero -->
+  <section class="hero">
+    <div class="container hero__inner">
+      <div class="hero__text">
+        <p class="t-overline">English coaching · online &amp; in Istanbul</p>
+        <h1 class="t-display-xl">Move your English forward.</h1>
+        <p class="t-body-l c-secondary hero__lead">1-to-1 lessons with Kyle, a native English speaker from New York. Speak confidently at work, in exams and when you travel.</p>
+        <div class="hero__ctas">
+          <Button href="/pricing#book" variant="accent" size="lg">Book a free {prices.intro_call_minutes}-min intro call</Button>
+          <Button href="/pricing" variant="secondary" size="lg" icon={false}>See pricing</Button>
+        </div>
+        <ul class="hero__tags" role="list">
+          <li class="tag tag--accent"><Icon name="star" size={14} /> {highlights.preply_rating} rating on Preply</li>
+          <li class="tag tag--brand">{highlights.years_teaching} years teaching</li>
+          <li class="tag tag--brand">TEFL Level 3 certified</li>
+          <li class="tag tag--neutral">{prices.singleLabel} / {prices.lesson_minutes} min</li>
+        </ul>
+      </div>
+      <div class="hero__visual">
+        <svg class="hero__motif" viewBox="0 0 160 200" aria-hidden="true"><path d="M0 0H70L150 100L70 200H0L80 100Z" fill="#2F4BFF"/><path d="M40 0H110L190 100L110 200H40L120 100Z" fill="#FF6B2C"/></svg>
+        <div class="photo photo--pop hero__photo">
+          <Image src={headshot} alt="Kyle, English teacher, smiling in a suit" widths={[400, 560]} sizes="(max-width: 900px) 80vw, 460px" loading="eager" fetchpriority="high" />
+        </div>
+        <div class="hero__chip"><Icon name="star" size={18} /><span><strong>Hi, I'm Kyle 👋</strong><br /><span class="t-body-s c-secondary">Your English coach</span></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Intro video -->
+  <section class="section section--inverse">
+    <div class="container split">
+      <div class="split__text">
+        <p class="t-overline">Meet your teacher</p>
+        <h2 class="t-h1">See what a lesson with me feels like</h2>
+        <p class="t-body-l c-secondary">A short hello: who I am, how I teach, and what we'll do in your free intro call.</p>
+      </div>
+      <VideoEmbed />
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="section section--surface" id="services">
+    <div class="container">
+      <SectionHead overline="What I teach" title="Lessons built around your goals" lead={`Every lesson is 1-to-1 and ${prices.lesson_minutes} minutes, focused on what you need right now.`} />
+      <div class="grid grid-3">
+        {services.map((s) => <ServiceCard {...s} minutes={prices.lesson_minutes} />)}
+        <article class="unsure">
+          <h3 class="t-h3">Not sure where to start?</h3>
+          <p class="t-body-m">Tell me your goals and I'll suggest the right plan.</p>
+          <Button href="/pricing#book" variant="accent">Book a free intro call</Button>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="section">
+    <div class="container">
+      <SectionHead overline="How it works" title="Three steps to better English" />
+      <ol class="steps" role="list">
+        {[
+          ['Book a free intro call', `${prices.intro_call_minutes} minutes to meet, check your level and talk about your goals.`],
+          ['Get your plan', 'A personal learning plan with the topics and skills you need most.'],
+          ['Start moving forward', 'Weekly lessons, notes after every class, and real progress you can feel.'],
+        ].map(([t, d], i) => (
+          <li class="steps__item">
+            <span class="steps__num"><svg viewBox="0 0 20 24" aria-hidden="true"><path d="M0 0H10L20 12L10 24H0L10 12Z" fill={i === 2 ? '#FF6B2C' : '#2F4BFF'} /></svg>{i + 1}</span>
+            <h3 class="t-h4">{t}</h3>
+            <p class="t-body-s c-secondary">{d}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- Interests -->
+  <section class="section section--surface">
+    <div class="container">
+      <SectionHead overline="Personal lessons" title="Lessons built around your interests" lead="Love travel, football or cooking? Every lesson uses words and examples from the things you care about, so new English sticks." />
+      <ul class="interests" role="list">
+        {interests.map((it) => (
+          <li class="interest">
+            <Image src={it.img} alt={it.alt} widths={[400, 640]} sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px" />
+            <span class="tag tag--inverse interest__label">{it.label}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- About teaser -->
+  <section class="section">
+    <div class="container split split--media-left">
+      <div class="photo photo--pop about__photo">
+        <Image src={teaching} alt="Kyle teaching a small conversation class in Istanbul" widths={[480, 640]} sizes="(max-width: 900px) 100vw, 560px" />
+      </div>
+      <div class="split__text">
+        <p class="t-overline">About Kyle</p>
+        <h2 class="t-h1">A teacher who knows what professionals need</h2>
+        <ul class="checklist t-body-m">
+          <li><Icon name="check" />Native English speaker, grew up in New York</li>
+          <li><Icon name="check" />Finance degree from the University of South Florida</li>
+          <li><Icon name="check" />{highlights.years_teaching} years teaching online on Preply, plus daily in-person classes in Istanbul</li>
+          <li><Icon name="check" />TEFL Level 3 certified (The TEFL Academy)</li>
+        </ul>
+        <div><Button href="/about" variant="secondary">More about Kyle</Button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Group classes teaser -->
+  <section class="section section--inverse">
+    <div class="container">
+      <div class="groups__head">
+        <SectionHead overline="In person · Istanbul" title="Small-group conversation classes" lead="Relaxed, real conversation with other learners every day. Practice speaking in a friendly group and make new friends." />
+        <Button href="/group-classes" variant="accent">About group classes</Button>
+      </div>
+      <ul class="groups__photos" role="list">
+        {[[explaining, 'Kyle explaining vocabulary on a chalkboard to the group'], [discussion, 'Students in a relaxed group discussion'], [portrait, 'A student answering a question in class']].map(([img, alt]) => (
+          <li class="photo"><Image src={img as any} alt={alt as string} widths={[400, 600]} sizes="(max-width: 760px) 100vw, 400px" /></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Reviews -->
+  {review && (
+    <section class="section">
+      <div class="container">
+        <SectionHead overline="What students say" title="Real reviews from real students">
+          <p class="t-label-m reviews__rating"><Icon name="star" size={14} /> {highlights.preply_rating} average rating on Preply</p>
+        </SectionHead>
+        <div class="reviews">
+          {reviews.map((r) => <ReviewCard {...r} />)}
+          <Button href={contact.preply_profile_url} variant="secondary" external>Read more reviews on Preply</Button>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Pricing -->
+  <section class="section section--surface" id="pricing">
+    <div class="container">
+      <SectionHead center overline="Pricing" title="Simple, flexible pricing" lead={`Start with a free ${prices.intro_call_minutes}-minute intro call. No commitment.`} />
+      <PricingCards />
+      <p class="t-body-s c-secondary pricing__note">No payment now: book your free intro call first, then pay for lessons after the call. Free rescheduling with {booking.cancellation_notice_hours} hours' notice.</p>
+    </div>
+  </section>
+
+  <!-- Start booking · Figma: Home › Book Intro Call -->
+  <section class="section section--brand" id="start">
+    <div class="container split">
+      <div class="split__text">
+        <p class="t-overline">Free · {prices.intro_call_minutes} minutes</p>
+        <h2 class="t-display-l">Book your free intro call</h2>
+        <p class="t-body-l start__lead">We'll check your level, talk about your goals, and plan your first lesson.</p>
+      </div>
+      <form class="start" action="/pricing" method="GET">
+        <fieldset>
+          <legend class="t-label-l">1. What do you want to focus on?</legend>
+          <div class="start__focus">
+            {bookingServices.map((s, i) => (
+              <label class="start__opt"><input type="radio" name="focus" value={s.id} checked={i === 0} /><span class="start__badge"><Icon name={s.icon} size={20} /></span><span class="t-label-m">{s.name}</span></label>
+            ))}
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend class="t-label-l">2. Your current level</legend>
+          <div class="start__levels">
+            {levels.map((l, i) => (
+              <label class="start__lvl" title={l.name}>
+                <input type="radio" name="level" value={l.id} checked={l.id === 'B1'} />
+                <span class="start__bars" aria-hidden="true">{levels.map((_, b) => <span class:list={{ on: b <= i }} style={`height:${5 + b * 2}px`}></span>)}</span>
+                <span class="start__id">{l.id}</span><span class="sr-only">{l.name}</span>
+              </label>
+            ))}
+          </div>
+          <a class="t-label-m start__test" href={booking.level_test_link} target="_blank" rel="noopener">Not sure? Take Preply's free level test →</a>
+        </fieldset>
+        <Button type="submit" variant="accent" size="lg" block>Next: describe your goal &amp; pick a time</Button>
+      </form>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const start = document.querySelector<HTMLFormElement>('form.start');
+  start?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const q = new URLSearchParams(new FormData(start) as unknown as Record<string, string>).toString();
+    location.href = `/pricing?${q}#book`;
+  });
+</script>
+
+<style>
+  .hero { padding: clamp(40px, 7vw, 88px) 0 clamp(56px, 8vw, 96px); overflow: hidden; }
+  .hero__inner { display: grid; grid-template-columns: 1.15fr 1fr; gap: clamp(32px, 5vw, 72px); align-items: center; }
+  .hero__text { display: grid; gap: 20px; }
+  .hero__lead { max-width: 540px; }
+  .hero__ctas { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 8px; }
+  .hero__tags { display: flex; flex-wrap: wrap; gap: 10px; }
+  .hero__visual { position: relative; justify-self: center; width: min(100%, 460px); }
+  .hero__motif { position: absolute; width: 58%; right: -22%; top: -8%; z-index: 0; }
+  .hero__photo { position: relative; z-index: 1; aspect-ratio: 460 / 580; border: 3px solid var(--ff-bg-inverse); }
+  .hero__chip { position: absolute; z-index: 2; left: -24px; bottom: 32px; display: flex; gap: 10px; align-items: flex-start; background: #fff; padding: 12px 16px; border-radius: var(--ff-radius-md); box-shadow: var(--ff-shadow-md); color: var(--ff-icon-accent); }
+  .hero__chip strong { color: var(--ff-text-primary); font: 600 14px/18px var(--ff-font-body); }
+  @media (max-width: 900px) {
+    .hero__inner { grid-template-columns: 1fr; }
+    .hero__visual { width: min(86%, 400px); margin-top: 16px; }
+    .hero__chip { left: -12px; }
+  }
+
+  .split { display: grid; grid-template-columns: 1fr 1.25fr; gap: clamp(32px, 5vw, 64px); align-items: center; }
+  .split__text { display: grid; gap: 16px; align-content: center; }
+  .split--media-left { grid-template-columns: 1fr 1fr; }
+  @media (max-width: 900px) { .split, .split--media-left { grid-template-columns: 1fr; } }
+  .about__photo { aspect-ratio: 560 / 460; }
+
+  .unsure { display: grid; align-content: space-between; gap: 16px; padding: 24px; border-radius: var(--ff-radius-lg); background: var(--ff-bg-inverse); color: #fff; }
+  .unsure p { color: var(--ff-text-inverse-secondary); }
+  .unsure :global(.btn) { justify-self: start; }
+
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; padding: 0; }
+  @media (max-width: 760px) { .steps { grid-template-columns: 1fr; gap: 28px; } }
+  .steps__item { display: grid; gap: 10px; align-content: start; }
+  .steps__num { display: flex; align-items: center; gap: 10px; font: 800 40px/1 var(--ff-font-display); }
+  .steps__num svg { width: 20px; height: 24px; }
+
+  .interests { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  @media (max-width: 1024px) { .interests { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 540px) { .interests { grid-template-columns: 1fr; gap: 16px; } }
+  .interest { position: relative; border-radius: var(--ff-radius-lg); overflow: hidden; aspect-ratio: 413 / 280; background: var(--ff-bg-subtle); }
+  .interest img { width: 100%; height: 100%; object-fit: cover; }
+  .interest__label { position: absolute; left: 16px; bottom: 16px; }
+
+  .groups__head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; margin-bottom: var(--ff-space-2xl); }
+  .groups__head :global(.section-head) { margin-bottom: 0; }
+  .groups__photos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .groups__photos li { aspect-ratio: 421 / 360; }
+  @media (max-width: 760px) { .groups__photos { grid-template-columns: 1fr 1fr; } .groups__photos li:first-child { grid-column: 1 / -1; } }
+
+  .reviews__rating { display: flex; align-items: center; gap: 6px; color: var(--ff-text-accent-strong); }
+  .reviews { display: grid; justify-items: center; gap: 24px; max-width: 820px; margin-inline: auto; }
+
+  .pricing__note { text-align: center; margin-top: 32px; }
+
+  .start__lead { color: #e3e8ff; }
+  .start { background: #fff; color: var(--ff-text-primary); border-radius: var(--ff-radius-xl); padding: clamp(20px, 3vw, 32px); display: grid; gap: 22px; box-shadow: var(--ff-shadow-pop); }
+  .start fieldset { border: 0; padding: 0; display: grid; gap: 12px; min-width: 0; }
+  .start__focus { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 520px) { .start__focus { grid-template-columns: 1fr; } }
+  .start__opt { position: relative; display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 1.5px solid var(--ff-border-default); background: var(--ff-bg-surface); border-radius: var(--ff-radius-md); cursor: pointer; }
+  .start__opt input, .start__lvl input { position: absolute; opacity: 0; pointer-events: none; }
+  .start__badge { width: 36px; height: 36px; border-radius: 10px; background: var(--ff-bg-subtle); color: var(--ff-icon-brand); display: grid; place-items: center; flex: none; }
+  .start__opt:has(input:checked) { border: 2px solid var(--ff-border-brand); background: var(--ff-bg-subtle); padding: 9.5px 11.5px; }
+  .start__opt:has(input:checked) .start__badge { background: var(--ff-bg-brand); color: #fff; }
+  .start__levels { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+  @media (max-width: 420px) { .start__levels { grid-template-columns: repeat(3, 1fr); } }
+  .start__lvl { position: relative; display: grid; justify-items: center; gap: 4px; padding: 10px 4px; border: 1.5px solid var(--ff-border-default); background: var(--ff-bg-surface); border-radius: var(--ff-radius-md); cursor: pointer; }
+  .start__bars { display: flex; align-items: flex-end; gap: 2px; height: 15px; }
+  .start__bars span { width: 4px; border-radius: 1px; background: var(--ff-border-default); }
+  .start__bars span.on { background: var(--ff-bg-brand); }
+  .start__id { font: 800 20px/24px var(--ff-font-display); }
+  .start__lvl:has(input:checked) { background: var(--ff-bg-brand); border-color: var(--ff-bg-brand); color: #fff; }
+  .start__lvl:has(input:checked) .start__bars span { background: rgba(255,255,255,.35); }
+  .start__lvl:has(input:checked) .start__bars span.on { background: var(--ff-bg-accent); }
+  .start__opt:has(input:focus-visible), .start__lvl:has(input:focus-visible) { outline: 3px solid var(--ff-border-focus); outline-offset: 2px; }
+  .start__test { color: var(--ff-text-brand); }
+</style>

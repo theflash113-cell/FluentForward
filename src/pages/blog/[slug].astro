@@ -1,0 +1,37 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { prices } from '../../lib/settings';
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+const { post } = Astro.props;
+const { Content } = await render(post);
+const date = post.data.date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+---
+<Base title={post.data.title} description={post.data.description}>
+  <article class="section">
+    <div class="container prose-wrap">
+      <p class="meta"><span class="tag tag--brand">{post.data.category}</span> <span class="t-body-s c-secondary">{date} · {post.data.readMinutes} min read · by Kyle</span></p>
+      <h1 class="t-display-l">{post.data.title}</h1>
+      <p class="t-body-l c-secondary lead">{post.data.description}</p>
+      <div class="prose"><Content /></div>
+      <p><a href="/blog">← All posts</a></p>
+    </div>
+  </article>
+  <CtaBand title="Want to practice with me?" text={`Book a free ${prices.intro_call_minutes}-minute intro call and we'll plan lessons around your goals.`} />
+</Base>
+<style>
+  .prose-wrap { max-width: 760px; display: grid; gap: 20px; }
+  .meta { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .prose { font: 400 18px/30px var(--ff-font-body); }
+  .prose :global(h2) { font: 800 28px/36px var(--ff-font-display); margin: 40px 0 12px; }
+  .prose :global(h3) { font: 700 22px/30px var(--ff-font-display); margin: 32px 0 10px; }
+  .prose :global(p), .prose :global(ul), .prose :global(ol) { margin-bottom: 18px; }
+  .prose :global(ul), .prose :global(ol) { padding-left: 24px; }
+  .prose :global(blockquote) { background: var(--ff-bg-warning-subtle); border-left: 4px solid var(--ff-bg-accent); padding: 16px 20px; border-radius: var(--ff-radius-md); margin: 24px 0; }
+  .prose :global(blockquote p) { margin: 0; }
+  .prose :global(img) { border-radius: var(--ff-radius-xl); }
+</style>

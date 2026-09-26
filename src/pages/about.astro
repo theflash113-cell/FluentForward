@@ -1,0 +1,88 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Button from '../components/Button.astro';
+import Icon from '../components/Icon.astro';
+import SectionHead from '../components/SectionHead.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { prices, highlights } from '../lib/settings';
+import headshot from '../assets/photos/kyle-headshot.jpg';
+import wide from '../assets/photos/class-group-wide.jpg';
+import teaching from '../assets/photos/class-teaching.jpg';
+import room from '../assets/photos/class-group-room.jpg';
+
+const creds = [
+  ['NYC', 'Native speaker, grew up in New York'],
+  ['USF', 'Finance degree: Business English that makes sense'],
+  [`${highlights.years_teaching} yrs`, 'Teaching on Preply + daily classes in Istanbul'],
+  ['TEFL L3', 'Certified with The TEFL Academy'],
+];
+const style = [
+  ['chat', 'You speak from minute one', 'Most of the lesson is you talking, with me guiding, correcting and pushing you a little further.'],
+  ['target', 'English for your real life', 'Meetings, interviews, exams, travel or books you love. We practice what you actually need.'],
+  ['pencil', 'Clear, honest feedback', 'You get notes after every class with your mistakes, new words and what to practice next.'],
+];
+---
+<Base title="About Kyle" description="Meet Kyle: a native English speaker from New York with a Finance degree, 2+ years of teaching on Preply, daily classes in Istanbul and a TEFL Level 3 certificate.">
+  <section class="section about-hero">
+    <div class="container about-hero__inner">
+      <div class="about-hero__text">
+        <p class="t-overline">About Kyle</p>
+        <h1 class="t-display-l">Hi, I'm Kyle. I help you speak English with confidence.</h1>
+        <p class="t-body-l c-secondary">I grew up in New York and studied Finance at the University of South Florida. Today I teach English full-time, online with students around the world, and in person every day in Istanbul.</p>
+        <p class="t-body-l c-secondary">I'm learning Turkish myself, so I know how it feels to understand a lot but freeze when it's time to speak. My lessons are built to fix exactly that: more speaking, real-world English, and honest, friendly feedback.</p>
+        <div><Button href="/pricing#book" variant="accent" size="lg">Book a free {prices.intro_call_minutes}-min intro call</Button></div>
+      </div>
+      <div class="photo photo--pop about-hero__photo">
+        <Image src={headshot} alt="Portrait of Kyle in a suit, smiling" widths={[400, 560]} sizes="(max-width: 900px) 80vw, 420px" loading="eager" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section--surface creds">
+    <div class="container">
+      <ul class="creds__list" role="list">
+        {creds.map(([big, small]) => <li><span class="creds__big">{big}</span><span class="t-body-s c-secondary">{small}</span></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <SectionHead overline="How I teach" title="Three things you can expect in every lesson" />
+      <div class="grid grid-3">
+        {style.map(([icon, t, d]) => (
+          <article class="card style-card"><span class="icon-badge"><Icon name={icon} /></span><h3 class="t-h4">{t}</h3><p class="t-body-m c-secondary">{d}</p></article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--surface">
+    <div class="container">
+      <SectionHead overline="Online and in Istanbul" title="Inside my classes" />
+      <ul class="gallery" role="list">
+        <li class="photo"><Image src={wide} alt="Kyle leading a conversation class in a small room" widths={[400, 600]} sizes="(max-width: 760px) 100vw, 400px" /></li>
+        <li class="photo"><Image src={teaching} alt="Kyle pointing to the chalkboard while students listen" widths={[400, 600]} sizes="(max-width: 760px) 100vw, 400px" /></li>
+        <li class="photo"><Image src={room} alt="A small group of students sitting together during class" widths={[400, 600]} sizes="(max-width: 760px) 100vw, 400px" /></li>
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand title="Let's move your English forward." text={`Book a free ${prices.intro_call_minutes}-minute call. We'll talk about your goals and your level.`} label={`Book a free ${prices.intro_call_minutes}-min intro call`} />
+</Base>
+<style>
+  .about-hero__inner { display: grid; grid-template-columns: 1.3fr 1fr; gap: clamp(32px, 6vw, 80px); align-items: center; }
+  .about-hero__text { display: grid; gap: 20px; }
+  .about-hero__photo { aspect-ratio: 420 / 540; border: 3px solid var(--ff-bg-inverse); max-width: 420px; justify-self: center; width: 100%; }
+  @media (max-width: 900px) { .about-hero__inner { grid-template-columns: 1fr; } .about-hero__photo { max-width: 340px; } }
+  .creds { padding-block: 40px; }
+  .creds__list { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  .creds__list li { display: grid; gap: 4px; }
+  .creds__big { font: 800 32px/40px var(--ff-font-display); color: var(--ff-text-brand); }
+  @media (max-width: 760px) { .creds__list { grid-template-columns: 1fr 1fr; } }
+  .style-card { display: grid; gap: 14px; align-content: start; }
+  .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .gallery li { aspect-ratio: 421 / 320; }
+  @media (max-width: 760px) { .gallery { grid-template-columns: 1fr; } }
+</style>

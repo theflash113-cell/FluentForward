@@ -1,0 +1,59 @@
+---
+import Logo from './Logo.astro';
+import { contact, services } from '../lib/settings';
+const year = new Date().getFullYear();
+---
+<footer class="footer">
+  <div class="container">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <Logo theme="dark" height={36} />
+        <p class="t-body-s">English coaching for professionals and university students. Online worldwide · in person in Istanbul.</p>
+      </div>
+      <nav aria-label="Lessons" class="footer__col">
+        <h2 class="t-overline">Learn</h2>
+        <ul role="list">{services.slice(0, 6).map((s) => <li><a href="/#services">{s.name}</a></li>)}</ul>
+      </nav>
+      <nav aria-label="Company" class="footer__col">
+        <h2 class="t-overline">Company</h2>
+        <ul role="list">
+          <li><a href="/about">About Kyle</a></li>
+          <li><a href="/pricing">Pricing &amp; booking</a></li>
+          <li><a href="/group-classes">Group classes (Istanbul)</a></li>
+          <li><a href="/blog">Blog &amp; tips</a></li>
+          <li><a href="/resources">Free resources</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </nav>
+      <nav aria-label="Follow" class="footer__col">
+        <h2 class="t-overline">Follow</h2>
+        <ul role="list">
+          <li><a href={contact.whatsappUrl()} target="_blank" rel="noopener">WhatsApp</a></li>
+          <li><a href={contact.emailUrl}>Email · {contact.email}</a></li>
+          <li><a href={contact.instagramUrl} target="_blank" rel="noopener">Instagram · @{contact.instagram_handle}</a></li>
+          <li><a href={contact.youtubeUrl} target="_blank" rel="noopener">YouTube</a></li>
+          <li><a href={contact.preply_profile_url} target="_blank" rel="noopener">Preply profile</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="footer__bottom t-body-s">
+      <p>© {year} Fluent Forward · Kyle · <a href="/policies#cancellation">Cancellation policy</a> · <a href="/policies#privacy">Privacy</a></p>
+      <p class="footer__tag">Move your English forward.</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer { background: var(--ff-bg-inverse); color: var(--ff-text-inverse); padding: 72px 0 32px; }
+  .footer__top { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1.3fr; gap: 40px; }
+  .footer__brand p { color: var(--ff-text-inverse-secondary); margin-top: 16px; max-width: 300px; }
+  .footer__col h2 { color: var(--ff-bg-accent); margin-bottom: 16px; }
+  .footer__col ul { display: grid; gap: 10px; }
+  .footer a { color: #fff; text-decoration: none; font: 400 14px/20px var(--ff-font-body); }
+  .footer a:hover { text-decoration: underline; }
+  .footer__bottom { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; border-top: 1px solid var(--ff-border-inverse); margin-top: 56px; padding-top: 24px; color: var(--ff-text-inverse-secondary); }
+  .footer__bottom a { color: var(--ff-text-inverse-secondary); }
+  .footer__tag { font-weight: 600; color: #fff; }
+  @media (max-width: 900px) { .footer__top { grid-template-columns: 1fr 1fr; } .footer__brand { grid-column: 1 / -1; } }
+  @media (max-width: 520px) { .footer__top { grid-template-columns: 1fr; } }
+</style>

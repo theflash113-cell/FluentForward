@@ -1,0 +1,288 @@
+---
+// Booking flow · Figma: Pricing & Booking › "Booking Steps"
+// Components used: Focus Option, Level Tile, Text Area (Inputs page › Booking Form Controls)
+import Icon from './Icon.astro';
+import Button from './Button.astro';
+import { bookingServices, levels, booking, contact, prices } from '../lib/settings';
+const calendar = booking.google_calendar_link?.trim();
+const calendarSrc = calendar ? (calendar.includes('gv=true') ? calendar : calendar + (calendar.includes('?') ? '&' : '?') + 'gv=true') : '';
+---
+<form
+  class="booking"
+  name="booking"
+  method="POST"
+  action="/booking-confirmed/"
+  data-netlify="true"
+  netlify-honeypot="bot-field"
+  data-calendar={calendarSrc}
+  data-calendar-link={calendar}
+  data-whatsapp={contact.whatsapp_number}
+  novalidate
+>
+  <input type="hidden" name="form-name" value="booking" />
+  <p class="sr-only"><label>Leave this empty: <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
+
+  <!-- Step 1 -->
+  <fieldset class="step" id="step-focus">
+    <legend class="step__head">
+      <span class="step__num" aria-hidden="true">1</span>
+      <span><span class="t-h3 step__title">What do you want to focus on?</span><span class="t-body-s c-secondary">Choose one. You can change it later.</span></span>
+    </legend>
+    <div class="focus-grid">
+      {bookingServices.map((s) => (
+        <label class="focus-opt">
+          <input type="radio" name="focus" value={s.name} data-id={s.id} required />
+          <span class="focus-opt__badge"><Icon name={s.icon} /></span>
+          <span class="focus-opt__text"><span class="t-label-l">{s.name}</span><span class="t-body-s c-secondary">{s.short}</span></span>
+          <span class="focus-opt__check" aria-hidden="true"><Icon name="check" size={14} /></span>
+        </label>
+      ))}
+    </div>
+    <p class="error-msg" data-error-for="focus" aria-live="polite"></p>
+  </fieldset>
+
+  <!-- Step 2 -->
+  <fieldset class="step" id="step-level">
+    <legend class="step__head">
+      <span class="step__num" aria-hidden="true">2</span>
+      <span><span class="t-h3 step__title">What is your current English level?</span><span class="t-body-s c-secondary">Pick the closest level. Not sure? A rough guess is fine.</span></span>
+    </legend>
+    <div class="level-grid">
+      {levels.map((l, i) => (
+        <label class="level-tile">
+          <input type="radio" name="level" value={`${l.id} · ${l.name}`} data-id={l.id} required />
+          <span class="level-tile__bars" aria-hidden="true">{levels.map((_, b) => <span class:list={['bar', { on: b <= i }]} style={`height:${6 + b * 3}px`}></span>)}</span>
+          <span class="level-tile__id">{l.id}</span>
+          <span class="level-tile__name">{l.name}</span>
+        </label>
+      ))}
+    </div>
+    <p class="level-test t-body-m">
+      <span class="c-secondary">Not sure of your level?</span>
+      <a href={booking.level_test_link} target="_blank" rel="noopener" class="t-label-l">Take Preply's free English level test →</a>
+      <span class="t-body-s c-secondary">(opens in a new tab)</span>
+    </p>
+    <p class="error-msg" data-error-for="level" aria-live="polite"></p>
+  </fieldset>
+
+  <!-- Step 3 -->
+  <fieldset class="step" id="step-about">
+    <legend class="step__head">
+      <span class="step__num" aria-hidden="true">3</span>
+      <span><span class="t-h3 step__title">Tell me about your situation</span><span class="t-body-s c-secondary">Under 200 characters.</span></span>
+    </legend>
+    <div class="field">
+      <label for="situation">Your situation</label>
+      <textarea id="situation" name="situation" class="textarea" maxlength="200" required aria-describedby="situation-help situation-count"
+        placeholder="e.g. I work in marketing and need to present to clients in English. I understand a lot but freeze when speaking."></textarea>
+      <div class="field__meta">
+        <span id="situation-help" class="helper">Your job or studies, your goal, and what feels hard.</span>
+        <span id="situation-count" class="helper counter" aria-live="polite">0 / 200</span>
+      </div>
+      <p class="error-msg" data-error-for="situation" aria-live="polite"></p>
+    </div>
+    <div class="details-grid">
+      <div class="field">
+        <label for="name">Your name</label>
+        <input id="name" name="name" class="input" autocomplete="name" required placeholder="First and last name" />
+        <p class="error-msg" data-error-for="name" aria-live="polite"></p>
+      </div>
+      <div class="field">
+        <label for="email">Your email</label>
+        <input id="email" name="email" type="email" class="input" autocomplete="email" required placeholder="name@example.com" aria-describedby="email-help" />
+        <span id="email-help" class="helper">I'll only use this to contact you about your booking.</span>
+        <p class="error-msg" data-error-for="email" aria-live="polite"></p>
+      </div>
+      <div class="field">
+        <label for="timezone">Your time zone</label>
+        <input id="timezone" name="timezone" class="input" placeholder="e.g. Europe/Istanbul" />
+        <span class="helper">Filled in automatically. Change it if it's wrong.</span>
+      </div>
+    </div>
+    <div class="submit-row">
+      <Button type="submit" variant="accent" size="lg">Continue: pick a time</Button>
+      <p class="helper">Free · {prices.intro_call_minutes} minutes · no payment needed</p>
+    </div>
+    <p class="error-msg form-error" data-error-for="form" role="alert"></p>
+  </fieldset>
+
+  <!-- Step 4 -->
+  <section class="step step--time" id="step-time" aria-labelledby="step-time-title" tabindex="-1">
+    <div class="step__head">
+      <span class="step__num" aria-hidden="true">4</span>
+      <span><span class="t-h3 step__title" id="step-time-title">Pick a time for your free {prices.intro_call_minutes}-minute intro call</span><span class="t-body-s c-secondary">Kyle is based in {booking.teacher_timezone}. Times show in your time zone.</span></span>
+    </div>
+    <div class="time-locked" data-state="locked">
+      <Icon name="calendar" size={28} />
+      <p class="t-body-m c-secondary">Finish steps 1–3 and press <strong>Continue</strong> to see available times.</p>
+    </div>
+    <div class="time-open" data-state="open" hidden>
+      <p class="sent t-label-l"><Icon name="check" size={20} /> Thanks! Your answers were sent to Kyle.</p>
+      {calendarSrc ? (
+        <>
+          <div class="calendar-frame"><iframe data-src={calendarSrc} title="Pick a time with Google Calendar" loading="lazy"></iframe></div>
+          <p class="t-body-s c-secondary">Calendar not loading? <a href={calendar} target="_blank" rel="noopener">Open the booking page in a new tab</a> or <a class="wa-link" href={contact.whatsappUrl()} target="_blank" rel="noopener">message Kyle on WhatsApp</a>.</p>
+        </>
+      ) : (
+        <div class="wa-pick">
+          <p class="t-body-l">Online booking opens soon. For now, send me a quick WhatsApp message and we'll pick a time together. It only takes a minute.</p>
+          <a class="btn btn--whatsapp btn--lg wa-link" href={contact.whatsappUrl()} target="_blank" rel="noopener"><Icon name="whatsapp" /><span>Message Kyle to pick a time</span></a>
+          <p class="t-body-s c-secondary">Prefer email? <a href={contact.emailUrl}>{contact.email}</a></p>
+        </div>
+      )}
+    </div>
+  </section>
+</form>
+
+<style>
+  .booking { display: grid; gap: 20px; }
+  .step { border: 1px solid var(--ff-border-default); background: var(--ff-bg-canvas); border-radius: var(--ff-radius-xl); padding: clamp(20px, 3vw, 32px); display: grid; gap: 18px; min-width: 0; }
+  .step__head { display: flex; gap: 14px; align-items: flex-start; padding: 0; float: left; width: 100%; }
+  .step__head + * { clear: both; }
+  .step__head > span:last-child { display: grid; gap: 2px; }
+  .step__num { width: 36px; height: 36px; flex: none; border-radius: 50%; background: var(--ff-bg-accent); color: var(--ff-text-on-accent); display: grid; place-items: center; font: 600 16px/1 var(--ff-font-body); margin-top: -2px; }
+  .step__title { display: block; }
+  @media (max-width: 640px) { .step__title { font-size: 20px; line-height: 28px; } }
+
+  /* Focus Option (Figma component 66:25) */
+  .focus-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 1024px) { .focus-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px) { .focus-grid { grid-template-columns: 1fr; gap: 10px; } }
+  .focus-opt { position: relative; display: flex; align-items: center; gap: 14px; padding: 16px 18px; border-radius: var(--ff-radius-lg); background: var(--ff-bg-surface); border: 1.5px solid var(--ff-border-default); cursor: pointer; transition: border-color .15s, background .15s; }
+  .focus-opt:hover { border-color: var(--ff-border-brand); }
+  .focus-opt input { position: absolute; opacity: 0; pointer-events: none; }
+  .focus-opt__badge { width: 48px; height: 48px; border-radius: var(--ff-radius-md); background: var(--ff-bg-subtle); color: var(--ff-icon-brand); display: grid; place-items: center; flex: none; transition: background .15s, color .15s; }
+  .focus-opt__text { display: grid; gap: 2px; flex: 1; min-width: 0; }
+  .focus-opt__check { width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid var(--ff-border-strong); display: grid; place-items: center; color: transparent; flex: none; }
+  .focus-opt:has(input:checked) { background: var(--ff-bg-subtle); border: 2px solid var(--ff-border-brand); padding: 15.5px 17.5px; }
+  .focus-opt:has(input:checked) .focus-opt__badge { background: var(--ff-bg-brand); color: #fff; }
+  .focus-opt:has(input:checked) .focus-opt__check { background: var(--ff-bg-brand); border-color: var(--ff-bg-brand); color: #fff; }
+  .focus-opt:has(input:focus-visible) { outline: 3px solid var(--ff-border-focus); outline-offset: 2px; }
+
+  /* Level Tile (Figma component 66:146) */
+  .level-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
+  @media (max-width: 760px) { .level-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; } }
+  .level-tile { position: relative; display: grid; justify-items: center; align-content: center; gap: 6px; min-height: 124px; padding: 16px 8px; border-radius: var(--ff-radius-lg); background: var(--ff-bg-surface); border: 1.5px solid var(--ff-border-default); cursor: pointer; text-align: center; transition: border-color .15s, background .15s; }
+  .level-tile:hover { border-color: var(--ff-border-brand); }
+  .level-tile input { position: absolute; opacity: 0; pointer-events: none; }
+  .level-tile__bars { display: flex; align-items: flex-end; gap: 3px; height: 21px; }
+  .level-tile__bars .bar { width: 6px; border-radius: 2px; background: var(--ff-border-default); }
+  .level-tile__bars .bar.on { background: var(--ff-bg-brand); }
+  .level-tile__id { font: 800 32px/40px var(--ff-font-display); letter-spacing: -0.01em; color: var(--ff-text-primary); }
+  .level-tile__name { font: 600 14px/18px var(--ff-font-body); color: var(--ff-text-secondary); }
+  .level-tile:has(input:checked) { background: var(--ff-bg-brand); border: 2px solid var(--ff-border-brand); }
+  .level-tile:has(input:checked) .level-tile__id, .level-tile:has(input:checked) .level-tile__name { color: #fff; }
+  .level-tile:has(input:checked) .bar { background: rgba(255,255,255,.35); }
+  .level-tile:has(input:checked) .bar.on { background: var(--ff-bg-accent); }
+  .level-tile:has(input:focus-visible) { outline: 3px solid var(--ff-border-focus); outline-offset: 2px; }
+  @media (max-width: 760px) { .level-tile { min-height: 96px; } .level-tile__id { font-size: 26px; line-height: 32px; } .level-tile__name { font-size: 12px; } }
+  .level-test { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: baseline; background: var(--ff-bg-subtle); border-radius: var(--ff-radius-md); padding: 12px 16px; }
+
+  .field__meta { display: flex; justify-content: space-between; gap: 12px; }
+  .counter { flex: none; font-variant-numeric: tabular-nums; }
+  .counter.is-near { color: var(--ff-text-warning); font-weight: 600; }
+  .details-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: start; }
+  @media (max-width: 900px) { .details-grid { grid-template-columns: 1fr; } }
+  .submit-row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 8px; }
+  .form-error:not(:empty) { background: var(--ff-bg-error-subtle); padding: 12px 16px; border-radius: var(--ff-radius-md); }
+
+  .step--time { background: var(--ff-bg-surface); }
+  .time-locked { display: flex; gap: 14px; align-items: center; padding: 20px; border: 2px dashed var(--ff-border-default); border-radius: var(--ff-radius-lg); color: var(--ff-text-secondary); }
+  .time-open { display: grid; gap: 16px; }
+  .sent { display: flex; align-items: center; gap: 8px; color: var(--ff-text-success); }
+  .calendar-frame { background: #fff; border-radius: var(--ff-radius-lg); border: 1px solid var(--ff-border-default); overflow: hidden; }
+  .calendar-frame iframe { width: 100%; height: 720px; border: 0; }
+  .wa-pick { display: grid; gap: 16px; justify-items: start; background: #fff; border: 1px solid var(--ff-border-default); border-radius: var(--ff-radius-lg); padding: 24px; }
+  .booking.is-sending button[type='submit'] { opacity: .6; pointer-events: none; }
+</style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('form.booking');
+  if (form) {
+    const $ = <T extends Element>(s: string) => form.querySelector<T>(s)!;
+    const textarea = $<HTMLTextAreaElement>('#situation');
+    const counter = $<HTMLElement>('#situation-count');
+    const tz = $<HTMLInputElement>('#timezone');
+    const MAX = 200;
+
+    // Time zone
+    try { tz.value = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch {}
+
+    // Prefill from URL (?focus=business&level=B1)
+    const params = new URLSearchParams(location.search);
+    const f = params.get('focus'); const l = params.get('level');
+    if (f) form.querySelector<HTMLInputElement>(`input[name="focus"][data-id="${CSS.escape(f)}"]`)?.click();
+    if (l) form.querySelector<HTMLInputElement>(`input[name="level"][data-id="${CSS.escape(l.toUpperCase())}"]`)?.click();
+
+    // Character counter
+    const updateCount = () => {
+      const n = textarea.value.length;
+      counter.textContent = `${n} / ${MAX}`;
+      counter.classList.toggle('is-near', n >= MAX - 20);
+    };
+    textarea.addEventListener('input', updateCount); updateCount();
+
+    const setError = (key: string, msg: string) => {
+      const el = form.querySelector<HTMLElement>(`[data-error-for="${key}"]`);
+      if (el) el.textContent = msg;
+      const input = form.querySelector<HTMLInputElement>(`[name="${key}"]`);
+      if (input && input.type !== 'radio') input.setAttribute('aria-invalid', msg ? 'true' : 'false');
+    };
+    form.addEventListener('change', (e) => { const t = e.target as HTMLInputElement; if (t.name) setError(t.name, ''); });
+    form.addEventListener('input', (e) => { const t = e.target as HTMLInputElement; if (t.name) setError(t.name, ''); });
+
+    const validate = () => {
+      const data = new FormData(form);
+      const errors: [string, string][] = [];
+      if (!data.get('focus')) errors.push(['focus', 'Please choose what you want to focus on.']);
+      if (!data.get('level')) errors.push(['level', 'Please pick your closest level. A guess is fine.']);
+      const s = String(data.get('situation') || '').trim();
+      if (!s) errors.push(['situation', 'Please write a sentence or two about your situation.']);
+      if (!String(data.get('name') || '').trim()) errors.push(['name', 'Please enter your name.']);
+      const email = String(data.get('email') || '').trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.push(['email', 'Please enter a valid email address.']);
+      ['focus', 'level', 'situation', 'name', 'email'].forEach((k) => setError(k, ''));
+      errors.forEach(([k, m]) => setError(k, m));
+      return errors;
+    };
+
+    const openStep4 = (focus: string, level: string, name: string) => {
+      const step = $<HTMLElement>('#step-time');
+      $<HTMLElement>('[data-state="locked"]').hidden = true;
+      $<HTMLElement>('[data-state="open"]').hidden = false;
+      const iframe = form.querySelector<HTMLIFrameElement>('iframe[data-src]');
+      if (iframe) iframe.src = iframe.dataset.src!;
+      const msg = `Hi Kyle! I'm ${name}. I just sent my booking answers on your website (${focus}, level ${level.split(' ')[0]}). When could we do the free intro call?`;
+      form.querySelectorAll<HTMLAnchorElement>('a.wa-link').forEach((a) => { a.href = `https://wa.me/${form.dataset.whatsapp}?text=${encodeURIComponent(msg)}`; });
+      step.focus({ preventScroll: true });
+      step.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const errors = validate();
+      setError('form', '');
+      if (errors.length) {
+        const first = form.querySelector<HTMLElement>(`[name="${errors[0][0]}"]`);
+        first?.closest('fieldset')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        (first as HTMLElement | null)?.focus({ preventScroll: true });
+        return;
+      }
+      const data = new FormData(form);
+      form.classList.add('is-sending');
+      try {
+        const res = await fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(data as unknown as Record<string, string>).toString(),
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        openStep4(String(data.get('focus')), String(data.get('level')), String(data.get('name')).trim().split(' ')[0]);
+      } catch {
+        setError('form', 'Sorry, something went wrong sending your answers. Please try again, or message Kyle on WhatsApp.');
+      } finally {
+        form.classList.remove('is-sending');
+      }
+    });
+  }
+</script>

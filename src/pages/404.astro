@@ -1,0 +1,22 @@
+---
+import Base from '../layouts/Base.astro';
+import Button from '../components/Button.astro';
+---
+<Base title="Page not found" description="This page took a wrong turn." noindex>
+  <section class="section section--surface nf">
+    <div class="container nf__inner">
+      <p class="nf__code" aria-hidden="true">404</p>
+      <h1 class="t-h1">Oops! This page took a wrong turn.</h1>
+      <p class="t-body-l c-secondary">Grammar tip: "took" is the past simple of "take". Let's get you back on track.</p>
+      <div class="nf__ctas">
+        <Button href="/" variant="primary" size="lg">Back to home</Button>
+        <Button href="/pricing#book" variant="secondary" size="lg" icon={false}>Book a free intro call</Button>
+      </div>
+    </div>
+  </section>
+</Base>
+<style>
+  .nf__inner { display: grid; justify-items: center; text-align: center; gap: 16px; padding-block: 40px; }
+  .nf__code { font: 800 clamp(120px, 20vw, 180px)/1 var(--ff-font-display); color: var(--ff-text-brand); letter-spacing: -0.04em; }
+  .nf__ctas { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 8px; }
+</style>

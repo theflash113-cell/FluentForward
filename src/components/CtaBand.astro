@@ -1,0 +1,23 @@
+---
+import Button from './Button.astro';
+interface Props { title: string; text: string; label?: string; href?: string; whatsapp?: boolean }
+const { title, text, label = 'Book a free intro call', href = '/pricing#book', whatsapp } = Astro.props;
+---
+<section class="cta section--brand">
+  <div class="container cta__inner">
+    <svg class="cta__motif" viewBox="0 0 64 48" aria-hidden="true"><path d="M0 0H20L40 24L20 48H0L20 24Z" fill="#fff" opacity=".18"/><path d="M24 0H44L64 24L44 48H24L44 24Z" fill="#FF6B2C"/></svg>
+    <h2 class="t-h1">{title}</h2>
+    <p class="t-body-l">{text}</p>
+    {whatsapp ? (
+      <a class="btn btn--whatsapp btn--lg" href={href} target="_blank" rel="noopener"><span>{label}</span></a>
+    ) : (
+      <Button href={href} variant="accent" size="lg">{label}</Button>
+    )}
+  </div>
+</section>
+<style>
+  .cta { padding-block: clamp(64px, 8vw, 88px); overflow: hidden; }
+  .cta__inner { display: grid; justify-items: center; text-align: center; gap: 16px; }
+  .cta__inner p { color: #e3e8ff; max-width: 560px; margin-bottom: 8px; }
+  .cta__motif { width: 64px; height: 48px; }
+</style>

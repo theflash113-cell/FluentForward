@@ -1,0 +1,11 @@
+---
+interface Props { overline?: string; title: string; lead?: string; center?: boolean; as?: 'h1'|'h2'; size?: 'display'|'h1'|'h2' }
+const { overline, title, lead, center, as: Tag = 'h2', size = 'h1' } = Astro.props;
+const cls = size === 'display' ? 't-display-l' : size === 'h2' ? 't-h2' : 't-h1';
+---
+<div class:list={['section-head', { 'section-head--center': center }]}>
+  {overline && <p class="t-overline">{overline}</p>}
+  <Tag class={cls}>{title}</Tag>
+  {lead && <p class="t-body-l c-secondary">{lead}</p>}
+  <slot />
+</div>

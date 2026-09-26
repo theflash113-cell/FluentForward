@@ -1,0 +1,47 @@
+---
+import Base from '../layouts/Base.astro';
+import SectionHead from '../components/SectionHead.astro';
+import { booking, prices, contact } from '../lib/settings';
+const [p5, p10] = prices.packs;
+const updated = 'September 2026';
+---
+<Base title="Lesson policies & privacy" description={`Fluent Forward lesson policies: free rescheduling with ${booking.cancellation_notice_hours} hours' notice, payment after your free intro call, lesson pack validity and privacy.`}>
+  <section class="section section--surface">
+    <div class="container pol">
+      <SectionHead as="h1" size="display" overline="Policies" title="Lesson policies" lead="Simple rules so lessons run smoothly for everyone." />
+      <article class="pol__card" id="cancellation">
+        <h2 class="t-h3">Cancellation &amp; rescheduling</h2>
+        <p>Reschedule or cancel for free with at least <strong>{booking.cancellation_notice_hours} hours' notice</strong>. Lessons cancelled with less than {booking.cancellation_notice_hours} hours' notice, or missed without notice, count as taught.</p>
+      </article>
+      <article class="pol__card" id="late">
+        <h2 class="t-h3">Late arrival</h2>
+        <p>If you are late, the lesson still ends at the scheduled time. After {booking.late_arrival_minutes} minutes without a message, the lesson counts as missed.</p>
+      </article>
+      <article class="pol__card" id="payment">
+        <h2 class="t-h3">Payment</h2>
+        <p>Your {prices.intro_call_minutes}-minute intro call is free. After the call, I send payment details. Lessons are paid in advance: single lessons ({prices.singleLabel}) or packs of 5 ({p5.label}) or 10 ({p10.label}).</p>
+      </article>
+      <article class="pol__card" id="packs">
+        <h2 class="t-h3">Lesson packs</h2>
+        <p>The 5-lesson pack is valid for {p5.months} months and the 10-lesson pack for {p10.months} months from the date of purchase. Unused lessons are not refundable. If something serious comes up, message me and we'll find a fair solution.</p>
+      </article>
+      <article class="pol__card" id="privacy">
+        <h2 class="t-h3">Privacy</h2>
+        <p>When you book a call or join the email list, I collect only what you send: your name, email, time zone, level, lesson focus and a short description of your situation. I use this only to plan and schedule your lessons and, if you signed up, to tell you about new blog posts and resources.</p>
+        <p>Forms are processed by Netlify (the website host) and bookings by Google Calendar. I never sell or share your details with anyone else. The site uses privacy-friendly visitor statistics with no cookies and no tracking across websites. Videos load from YouTube only when you press play.</p>
+        <p>To see, change or delete your details, email <a href={contact.emailUrl}>{contact.email}</a>.</p>
+        <p class="t-body-s c-secondary">Last updated: {updated}.</p>
+      </article>
+      <article class="pol__card" id="terms">
+        <h2 class="t-h3">Terms</h2>
+        <p class="c-secondary">Full terms of service will be added here soon. Questions in the meantime? <a href={contact.emailUrl}>Email me</a>.</p>
+      </article>
+    </div>
+  </section>
+</Base>
+<style>
+  .pol { max-width: 880px; }
+  .pol__card { background: var(--ff-bg-canvas); border-radius: 20px; padding: 28px 32px; display: grid; gap: 10px; margin-bottom: 20px; font: 400 18px/28px var(--ff-font-body); color: var(--ff-text-secondary); }
+  .pol__card h2 { color: var(--ff-text-primary); }
+  .pol__card strong { color: var(--ff-text-primary); }
+</style>

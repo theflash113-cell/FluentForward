@@ -1,0 +1,22 @@
+---
+// Figma: Card/Review (56:26) · real reviews only, from settings.yaml
+import Icon from './Icon.astro';
+interface Props { name: string; source: string; stars: number; date: string; quote: string }
+const { name, source, stars, date, quote } = Astro.props;
+---
+<figure class="review">
+  <div class="review__stars" role="img" aria-label={`${stars} out of 5 stars`}>{Array.from({ length: stars }).map(() => <Icon name="star" size={20} />)}</div>
+  <blockquote class="t-body-l review__quote"><p>“{quote}”</p></blockquote>
+  <figcaption class="review__by">
+    <span class="review__avatar" aria-hidden="true">{name.charAt(0)}</span>
+    <span><span class="t-label-l">{name}</span><br /><span class="t-body-s c-secondary">{source} · {stars} stars · {date}</span></span>
+  </figcaption>
+</figure>
+<style>
+  .review { display: grid; gap: 16px; padding: 28px; background: var(--ff-bg-canvas); border: 1px solid var(--ff-border-default); border-radius: 20px; box-shadow: var(--ff-shadow-sm); }
+  .review__stars { display: flex; gap: 4px; color: var(--ff-icon-accent); }
+  .review__stars :global(svg) { fill: currentColor; }
+  .review__quote { font-style: italic; }
+  .review__by { display: flex; gap: 12px; align-items: center; }
+  .review__avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--ff-bg-subtle); color: var(--ff-text-brand); display: grid; place-items: center; font: 700 16px/1 var(--ff-font-display); }
+</style>

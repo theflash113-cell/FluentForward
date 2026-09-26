@@ -1,0 +1,44 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import ComingSoon from '../../components/ComingSoon.astro';
+import Newsletter from '../../components/Newsletter.astro';
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort((a, b) => +b.data.date - +a.data.date);
+const fmt = (d: Date) => d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+---
+<Base title="Blog & English tips" description="Short, practical English tips for work, travel and everyday life from Kyle at Fluent Forward.">
+  <section class="section section--surface">
+    <div class="container">
+      <SectionHead as="h1" size="display" overline="Blog & tips" title="English tips you can use today" lead="Short, practical lessons for work, travel and everyday life." />
+      {posts.length === 0 ? (
+        <ComingSoon source="blog" items={['Phrases to sound confident in meetings', 'Present perfect or past simple? The easy test', 'Travel English you will actually use', 'Pronunciation: tricky sounds made simple']} />
+      ) : (
+        <>
+          <ul class="posts" role="list">
+            {posts.map((p) => (
+              <li class="post">
+                <span class="tag tag--brand">{p.data.category}</span>
+                <h2 class="t-h4"><a href={`/blog/${p.id}`}>{p.data.title}</a></h2>
+                <p class="t-body-s c-secondary">{p.data.description}</p>
+                <p class="t-body-s c-secondary post__meta">{fmt(p.data.date)} · {p.data.readMinutes} min read</p>
+              </li>
+            ))}
+          </ul>
+          <div class="nl"><h2 class="t-h3">Get one English tip every week</h2><Newsletter source="blog" /></div>
+        </>
+      )}
+    </div>
+  </section>
+</Base>
+<style>
+  .posts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  @media (max-width: 1024px) { .posts { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 640px) { .posts { grid-template-columns: 1fr; } }
+  .post { position: relative; display: grid; gap: 12px; align-content: start; justify-items: start; padding: 24px; background: #fff; border: 1px solid var(--ff-border-default); border-radius: var(--ff-radius-lg); box-shadow: var(--ff-shadow-sm); transition: border-color .15s, box-shadow .15s; }
+  .post:hover { border-color: var(--ff-border-brand); box-shadow: var(--ff-shadow-pop); }
+  .post a { color: inherit; text-decoration: none; }
+  .post a::after { content: ''; position: absolute; inset: 0; }
+  .post__meta { margin-top: auto; }
+  .nl { margin-top: 48px; display: grid; gap: 16px; }
+</style>

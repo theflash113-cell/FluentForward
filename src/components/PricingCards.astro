@@ -1,0 +1,44 @@
+---
+// Figma: Card/Pricing (13:368) · values come from settings.yaml
+import Icon from './Icon.astro';
+import Button from './Button.astro';
+import { prices } from '../lib/settings';
+interface Props { headingLevel?: 2 | 3 }
+const { headingLevel = 3 } = Astro.props;
+const H = headingLevel === 2 ? 'h2' : 'h3';
+const [p5, p10] = prices.packs;
+const cards = [
+  { name: 'Single lesson', price: prices.singleLabel, unit: '/ lesson', note: `${prices.lesson_minutes}-minute online lesson`, features: ['Pay as you go', 'Any lesson type', 'Lesson notes after class'], featured: false },
+  { name: '5-lesson pack', price: p5.label, unit: '/ 5 lessons', note: `${p5.perLesson} per lesson · save ${p5.saves}`, features: [`Use within ${p5.months} months`, 'Any lesson type', 'Lesson notes after class'], featured: false },
+  { name: '10-lesson pack', price: p10.label, unit: '/ 10 lessons', note: `${p10.perLesson} per lesson · save ${p10.saves}`, features: [`Use within ${p10.months} months`, 'Priority scheduling', 'Personal learning plan', 'Lesson notes after every class'], featured: true },
+];
+---
+<div class="plans">
+  {cards.map((c) => (
+    <article class:list={['plan', { 'plan--featured': c.featured }]}>
+      <div class="plan__top">
+        <H class="t-overline plan__name">{c.name}</H>
+        {c.featured && <span class="tag tag--accent-solid">Best value</span>}
+      </div>
+      <p class="plan__price"><span class="plan__amount">{c.price}</span> <span class="t-body-m plan__unit">{c.unit}</span></p>
+      <p class="t-body-s plan__note">{c.note}</p>
+      <ul class="checklist t-body-m">{c.features.map((f) => <li><Icon name="check" />{f}</li>)}</ul>
+      <Button href="/pricing#book" variant={c.featured ? 'accent' : 'secondary'} size="lg" block onDark={false}>Book a free intro call</Button>
+    </article>
+  ))}
+</div>
+<style>
+  .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; align-items: stretch; }
+  @media (max-width: 960px) { .plans { grid-template-columns: 1fr; max-width: 480px; margin-inline: auto; } }
+  .plan { display: flex; flex-direction: column; gap: 20px; padding: 32px; border-radius: var(--ff-radius-xl); background: var(--ff-bg-canvas); border: 1px solid var(--ff-border-default); }
+  .plan :global(.btn) { margin-top: auto; }
+  .plan__top { display: flex; justify-content: space-between; align-items: center; min-height: 26px; }
+  .plan__name { color: var(--ff-text-brand); }
+  .plan__price { display: flex; align-items: baseline; gap: 8px; }
+  .plan__amount { font: 800 48px/1 var(--ff-font-display); letter-spacing: -0.02em; }
+  .plan__unit, .plan__note { color: var(--ff-text-secondary); }
+  .plan--featured { background: var(--ff-bg-inverse); color: #fff; border: 2px solid var(--ff-border-brand); box-shadow: var(--ff-shadow-pop); }
+  .plan--featured .plan__name { color: var(--ff-bg-accent); }
+  .plan--featured .plan__unit, .plan--featured .plan__note { color: var(--ff-text-inverse-secondary); }
+  .plan--featured .checklist :global(svg) { color: var(--ff-icon-accent); }
+</style>

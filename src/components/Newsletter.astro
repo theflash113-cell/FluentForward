@@ -1,0 +1,40 @@
+---
+import Button from './Button.astro';
+interface Props { source: string; dark?: boolean }
+const { source, dark } = Astro.props;
+---
+<form class:list={['newsletter', { 'newsletter--dark': dark }]} name="newsletter" method="POST" action="/subscribed/" data-netlify="true" netlify-honeypot="bot-field">
+  <input type="hidden" name="form-name" value="newsletter" />
+  <input type="hidden" name="source" value={source} />
+  <p class="sr-only"><label>Leave this empty: <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
+  <div class="newsletter__row">
+    <label class="sr-only" for={`nl-${source}`}>Your email</label>
+    <input id={`nl-${source}`} name="email" type="email" required class="input" placeholder="you@example.com" autocomplete="email" />
+    <Button type="submit" variant="accent" icon={false}>Notify me</Button>
+  </div>
+  <p class="helper newsletter__msg" aria-live="polite">No spam. Just a note when new {source === 'blog' ? 'posts' : 'resources'} are ready. Unsubscribe anytime.</p>
+</form>
+<style>
+  .newsletter { display: grid; gap: 10px; max-width: 520px; }
+  .newsletter__row { display: flex; gap: 12px; }
+  .newsletter__row .input { flex: 1; min-width: 0; }
+  @media (max-width: 480px) { .newsletter__row { flex-direction: column; } }
+  .newsletter--dark .helper { color: var(--ff-text-inverse-secondary); }
+  .newsletter.is-done .newsletter__row { display: none; }
+  .newsletter.is-done .newsletter__msg { font-weight: 600; color: var(--ff-text-success); }
+</style>
+<script>
+  document.querySelectorAll<HTMLFormElement>('form.newsletter').forEach((form) => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const msg = form.querySelector<HTMLElement>('.newsletter__msg')!;
+      const email = form.querySelector<HTMLInputElement>('input[type=email]')!;
+      if (!email.checkValidity()) { email.setAttribute('aria-invalid', 'true'); msg.textContent = 'Please enter a valid email address.'; email.focus(); return; }
+      try {
+        const res = await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(new FormData(form) as unknown as Record<string, string>).toString() });
+        if (!res.ok) throw new Error();
+        form.classList.add('is-done'); msg.textContent = "Thanks! You're on the list.";
+      } catch { msg.textContent = 'Sorry, that didn\'t work. Please try again in a moment.'; }
+    });
+  });
+</script>

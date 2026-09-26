@@ -1,0 +1,24 @@
+---
+// Figma: Card/Service (13:315)
+import Icon from './Icon.astro';
+interface Props { id: string; name: string; description: string; icon: string; minutes: number }
+const { id, name, description, icon, minutes } = Astro.props;
+---
+<article class="svc">
+  <span class="icon-badge"><Icon name={icon} /></span>
+  <h3 class="t-h4">{name}</h3>
+  <p class="t-body-s c-secondary">{description}</p>
+  <div class="svc__foot">
+    <span class="tag tag--neutral">{minutes} min</span>
+    <a class="svc__link t-label-m" href={`/pricing?focus=${id}#book`}>Book this <span class="sr-only">: {name}</span><Icon name="arrow-right" size={16} /></a>
+  </div>
+</article>
+<style>
+  .svc { display: grid; grid-template-rows: auto auto 1fr auto; gap: 16px; padding: 24px; background: var(--ff-bg-canvas); border: 1px solid var(--ff-border-default); border-radius: var(--ff-radius-lg); box-shadow: var(--ff-shadow-sm); transition: border-color .15s, box-shadow .15s, transform .15s; }
+  .svc:hover { border-color: var(--ff-border-brand); box-shadow: var(--ff-shadow-pop); transform: translate(-2px, -2px); }
+  .svc h3 { margin-top: 4px; }
+  .svc__foot { display: flex; justify-content: space-between; align-items: center; }
+  .svc__link { display: inline-flex; align-items: center; gap: 6px; color: var(--ff-text-brand); text-decoration: none; }
+  .svc__link:hover { text-decoration: underline; }
+  @media (prefers-reduced-motion: reduce) { .svc:hover { transform: none; } }
+</style>
