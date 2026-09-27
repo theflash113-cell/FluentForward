@@ -44,7 +44,7 @@ booking:
   # Paste your Google Calendar appointment booking page link here
   # (Google Calendar > Appointment schedule > Share > Booking page link).
   # While this is empty, step 4 shows a WhatsApp button instead.
-  google_calendar_link: ""
+  google_calendar_link: "https://calendar.google.com/calendar/appointments/schedules/AcZssZ0XaHNJxUSWjXw2aZgimZBhvj5V_BfQAY591NLQwQGNzJ8tfMCv-SCk18pIbYEMazhB8QTCS2QM?gv=true"
   # Free English level test students can take if unsure of their level
   level_test_link: "https://preply.com/en/language-tests/english"
   # Hours of notice needed to reschedule or cancel for free
