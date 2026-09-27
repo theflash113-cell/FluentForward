@@ -7,5 +7,5 @@ const site = process.env.URL || 'https://fluentforward.netlify.app';
 export default defineConfig({
   site,
   trailingSlash: 'ignore',
-  integrations: [sitemap({ filter: (page) => !/\/(booking-confirmed|subscribed|404)\/?$/.test(page) })],
+  integrations: [sitemap({ filter: (page) => !/\/(booking-confirmed|subscribed|students|404)\/?$/.test(page) })],
 });
