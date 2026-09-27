@@ -9,6 +9,7 @@ const links = [
   { href: '/group-classes', label: 'Group classes' },
   { href: '/blog', label: 'Blog' },
   { href: '/contact', label: 'Contact' },
+  { href: '/students', label: 'Students' },
 ];
 ---
 <header class="nav">
@@ -35,16 +36,16 @@ const links = [
   .nav__logo { display: flex; flex: none; }
   .nav__links { display: flex; align-items: center; gap: 40px; }
   .nav__links ul { display: flex; gap: 32px; margin: 0; }
-  .nav__links a:not(.btn) { font: 600 16px/20px var(--ff-font-body); color: var(--ff-text-primary); text-decoration: none; padding: 8px 0; border-bottom: 2px solid transparent; }
+  .nav__links a:not(.btn) { font: 600 16px/20px var(--ff-font-body); color: var(--ff-text-primary); text-decoration: none; padding: 8px 0; border-bottom: 2px solid transparent; white-space: nowrap; }
   .nav__links a:not(.btn):hover { color: var(--ff-text-brand); }
   .nav__links a[aria-current='page'] { color: var(--ff-text-brand); border-bottom-color: var(--ff-border-brand); }
   .nav__toggle { display: none; background: none; border: 0; padding: 10px; margin-right: -10px; cursor: pointer; color: var(--ff-text-primary); }
   .nav__toggle :global(.nav__icon-close) { display: none; }
-  @media (max-width: 1080px) {
+  @media (max-width: 1180px) {
     .nav__links ul { gap: 20px; }
     .nav__links { gap: 24px; }
   }
-  @media (max-width: 960px) {
+  @media (max-width: 1080px) {
     .nav__inner { min-height: 68px; }
     .nav__toggle { display: block; }
     .nav__links { display: none; position: absolute; inset: 100% 0 auto 0; background: #fff; border-bottom: 1px solid var(--ff-border-default); flex-direction: column; align-items: stretch; gap: 16px; padding: 16px var(--ff-gutter) 24px; box-shadow: var(--ff-shadow-lg); }

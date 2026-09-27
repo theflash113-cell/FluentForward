@@ -64,7 +64,6 @@ export default async (request, context) => {
   headers.delete('content-length');
   headers.delete('etag');
   headers.set('Cache-Control', 'private, no-store');
-  headers.set('X-Robots-Tag', 'noindex');
   // A removed code: forget it so the student sees the code box again.
   if (saved && !allowed) headers.append('Set-Cookie', cookie('', 0));
   // Renew the cookie so access never runs out while the code is valid.

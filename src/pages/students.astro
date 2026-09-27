@@ -3,15 +3,14 @@
 // The Netlify edge function in netlify/edge-functions/students.js checks the
 // student's code and fills in this page: it swaps data-access="locked" for
 // "open" and puts the calendar link in place of the placeholder below (or
-// about:blank when locked). The built page never contains the link itself,
-// so it can't be found in the public files.
+// about:blank when locked). The built page never contains the link itself.
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import Button from '../components/Button.astro';
 import { booking, contact } from '../lib/settings';
 const askForCode = contact.whatsappUrl("Hi Kyle! Could you send me my student booking code?");
 ---
-<Base title="Book a lesson" description="Private lesson booking for current Fluent Forward students." noindex>
+<Base title="Book a lesson" description="Lesson booking for current Fluent Forward students. Enter the student code Kyle sent you to pick a lesson time.">
   <section class="section section--surface students" data-access="locked" data-code-error="0">
     <div class="container students__gate">
       <span class="students__icon"><Icon name="calendar" size={32} /></span>
