@@ -59,7 +59,7 @@ booking:
 # Cloudflare Web Analytics token (Web Analytics > Manage site).
 # Leave empty to turn stats off.
 analytics:
-  cloudflare_token: ""
+  cloudflare_token: "c5d7996040cf455189c1b8a4a6b5057e"
 
 
 # ── HIGHLIGHTS (small badges under the homepage headline) ────
