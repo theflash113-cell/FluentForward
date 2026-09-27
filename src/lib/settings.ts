@@ -3,7 +3,7 @@ import path from 'node:path';
 import { parse } from 'yaml';
 
 type Service = { id: string; name: string; short: string; description: string; icon: string; booking?: boolean };
-type Review = { name: string; source: string; stars: number; date: string; quote: string };
+type Review = { name: string; source: string; stars?: number; date?: string; quote: string; photo?: string };
 
 const raw = parse(fs.readFileSync(path.resolve('src/content/settings.yaml'), 'utf8'));
 

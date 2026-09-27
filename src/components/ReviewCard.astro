@@ -1,15 +1,23 @@
 ---
 // Figma: Card/Review (56:26) · real reviews only, from settings.yaml
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import Icon from './Icon.astro';
-interface Props { name: string; source: string; stars: number; date: string; quote: string }
-const { name, source, stars, date, quote } = Astro.props;
+interface Props { name: string; source: string; stars?: number; date?: string; quote: string; photo?: string }
+const { name, source, stars, date, quote, photo } = Astro.props;
+const photos = import.meta.glob<{ default: ImageMetadata }>('../assets/photos/reviews/*.{jpg,jpeg,png,webp}', { eager: true });
+const img = photo ? photos[`../assets/photos/reviews/${photo}`]?.default : undefined;
+if (photo && !img) throw new Error(`Review photo "${photo}" not found in src/assets/photos/reviews/`);
+const meta = [source, stars && `${stars} stars`, date].filter(Boolean).join(' · ');
 ---
 <figure class="review">
-  <div class="review__stars" role="img" aria-label={`${stars} out of 5 stars`}>{Array.from({ length: stars }).map(() => <Icon name="star" size={20} />)}</div>
+  {stars && <div class="review__stars" role="img" aria-label={`${stars} out of 5 stars`}>{Array.from({ length: stars }).map(() => <Icon name="star" size={20} />)}</div>}
   <blockquote class="t-body-l review__quote"><p>“{quote}”</p></blockquote>
   <figcaption class="review__by">
-    <span class="review__avatar" aria-hidden="true">{name.charAt(0)}</span>
-    <span><span class="t-label-l">{name}</span><br /><span class="t-body-s c-secondary">{source} · {stars} stars · {date}</span></span>
+    {img
+      ? <Image src={img} alt="" widths={[48, 96]} sizes="48px" class="review__avatar review__avatar--photo" />
+      : <span class="review__avatar" aria-hidden="true">{name.charAt(0)}</span>}
+    <span><span class="t-label-l">{name}</span><br /><span class="t-body-s c-secondary">{meta}</span></span>
   </figcaption>
 </figure>
 <style>
@@ -18,5 +26,6 @@ const { name, source, stars, date, quote } = Astro.props;
   .review__stars :global(svg) { fill: currentColor; }
   .review__quote { font-style: italic; }
   .review__by { display: flex; gap: 12px; align-items: center; }
-  .review__avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--ff-bg-subtle); color: var(--ff-text-brand); display: grid; place-items: center; font: 700 16px/1 var(--ff-font-display); }
+  .review__avatar { flex: none; width: 48px; height: 48px; border-radius: 50%; background: var(--ff-bg-subtle); color: var(--ff-text-brand); display: grid; place-items: center; font: 700 16px/1 var(--ff-font-display); }
+  .review__avatar--photo { object-fit: cover; }
 </style>
