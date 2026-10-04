@@ -17,10 +17,10 @@
 # calculated automatically everywhere on the site.
 prices:
   currency_symbol: "$"
-  lesson_minutes: 50          # length of one lesson
-  single: 13                  # price of one lesson
-  pack_5: 60                  # price of the 5-lesson pack
-  pack_10: 110                # price of the 10-lesson pack
+  lesson_minutes: 60          # length of one lesson
+  single: 20                  # price of one lesson
+  pack_5: 90                  # price of the 5-lesson pack
+  pack_10: 170                # price of the 10-lesson pack
   pack_5_valid_months: 3      # how long the 5-pack can be used
   pack_10_valid_months: 6     # how long the 10-pack can be used
   intro_call_minutes: 15      # length of the free intro call
