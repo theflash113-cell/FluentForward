@@ -15,15 +15,28 @@
 # ── PRICES ───────────────────────────────────────────────────
 # Numbers only (no $ sign). Per-lesson prices and savings are
 # calculated automatically everywhere on the site.
+# The prices directly below are for the standard lesson.
 prices:
   currency_symbol: "$"
-  lesson_minutes: 60          # length of one lesson
-  single: 20                  # price of one lesson
+  lesson_minutes: 50          # length of the standard lesson
+  single: 20                  # price of one standard lesson
   pack_5: 90                  # price of the 5-lesson pack
   pack_10: 170                # price of the 10-lesson pack
-  pack_5_valid_months: 3      # how long the 5-pack can be used
-  pack_10_valid_months: 6     # how long the 10-pack can be used
+  pack_5_valid_months: 3      # how long a 5-pack can be used
+  pack_10_valid_months: 6     # how long a 10-pack can be used
   intro_call_minutes: 15      # length of the free intro call
+  # Other lesson lengths, each with its own packs.
+  # To add one, copy a block of 4 lines (starting with -).
+  # To remove one, delete its 4 lines.
+  other_lessons:
+    - minutes: 30
+      single: 12
+      pack_5: 54
+      pack_10: 102
+    - minutes: 80
+      single: 32
+      pack_5: 144
+      pack_10: 272
 
 
 # ── CONTACT ──────────────────────────────────────────────────

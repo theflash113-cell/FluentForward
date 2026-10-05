@@ -79,7 +79,7 @@ const review = reviews[0];
   <!-- Services -->
   <section class="section section--surface" id="services">
     <div class="container">
-      <SectionHead overline="What I teach" title="Lessons built around your goals" lead={`Every lesson is 1-to-1 and ${prices.lesson_minutes} minutes, focused on what you need right now.`} />
+      <SectionHead overline="What I teach" title="Lessons built around your goals" lead={`Every lesson is 1-to-1 and focused on what you need right now. Standard lessons are ${prices.lesson_minutes} minutes.`} />
       <div class="grid grid-3">
         {services.map((s) => <ServiceCard {...s} minutes={prices.lesson_minutes} />)}
         <article class="unsure">
@@ -181,6 +181,11 @@ const review = reviews[0];
     <div class="container">
       <SectionHead center overline="Pricing" title="Simple, flexible pricing" lead={`Start with a free ${prices.intro_call_minutes}-minute intro call. No commitment.`} />
       <PricingCards />
+      {prices.options.length > 1 && (
+        <p class="t-body-m pricing__lengths">
+          Prices above are for {prices.lesson_minutes}-minute lessons. Also available: {prices.options.filter((o) => !o.standard).map((o, i, all) => <>{i > 0 && (i === all.length - 1 ? ' and ' : ', ')}{o.minutes}-minute lessons ({o.singleLabel})</>)}. <a href="/pricing">See all prices</a>
+        </p>
+      )}
       <p class="t-body-s c-secondary pricing__note">No payment now: book your free intro call first, then pay for lessons after the call. Free rescheduling with {booking.cancellation_notice_hours} hours' notice.</p>
     </div>
   </section>
@@ -280,6 +285,8 @@ const review = reviews[0];
   .reviews__rating { display: flex; align-items: center; gap: 6px; color: var(--ff-text-accent-strong); }
   .reviews { display: grid; justify-items: center; gap: 24px; max-width: 820px; margin-inline: auto; }
 
+  .pricing__lengths { text-align: center; margin-top: 32px; }
+  .pricing__lengths + .pricing__note { margin-top: 12px; }
   .pricing__note { text-align: center; margin-top: 32px; }
 
   .start__lead { color: #e3e8ff; }

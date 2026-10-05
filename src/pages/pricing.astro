@@ -6,6 +6,14 @@ import PricingCards from '../components/PricingCards.astro';
 import BookingForm from '../components/BookingForm.astro';
 import { prices, booking } from '../lib/settings';
 const [p5, p10] = prices.packs;
+const otherLengths = prices.otherMinutes.map((m) => `${m}-`).join(' and ');
+const blurbs: Record<number, string> = {
+  30: 'A short, focused lesson. Good for busy weeks, quick speaking practice or one small topic.',
+  50: 'My regular lesson. Enough time to learn something new, practice it and review.',
+  80: 'A long lesson for deep work: exam practice, presentations, interviews or intensive speaking.',
+};
+const blurb = (o: (typeof prices.options)[number]) =>
+  blurbs[o.minutes] ?? (o.minutes < prices.lesson_minutes ? 'A shorter lesson for focused practice.' : 'A longer lesson with extra time for practice.');
 const faqs = [
   ['What happens in the free intro call?', `We meet for ${prices.intro_call_minutes} minutes, check your level, talk about your goals and plan your first lesson. No payment needed.`],
   ['Where do lessons happen?', 'Online, by video call. You get the link in your calendar invite. Group classes happen in person in Istanbul.'],
@@ -14,11 +22,26 @@ const faqs = [
   ['How long can I use a lesson pack?', `The 5-lesson pack is valid for ${p5.months} months and the 10-lesson pack for ${p10.months} months from purchase. Unused lessons can't be refunded, but if something big comes up, just message me.`],
 ];
 ---
-<Base title="Pricing & booking" description={`Simple pricing: ${prices.singleLabel} per ${prices.lesson_minutes}-minute lesson, or save with 5- and 10-lesson packs. Book a free ${prices.intro_call_minutes}-minute intro call in 4 quick steps.`}>
+<Base title="Pricing & booking" description={`Simple pricing: ${prices.singleLabel} per ${prices.lesson_minutes}-minute lesson${otherLengths ? `, with ${otherLengths}minute lessons too` : ''}. Save with 5- and 10-lesson packs. Book a free ${prices.intro_call_minutes}-minute intro call in 4 quick steps.`}>
   <section class="section section--surface">
     <div class="container">
-      <SectionHead as="h1" size="display" overline="Pricing" title="Simple pricing. Real progress." lead={`Every lesson is 1-to-1, online and ${prices.lesson_minutes} minutes. Your first step is a free ${prices.intro_call_minutes}-minute intro call.`} />
-      <PricingCards headingLevel={2} />
+      <SectionHead as="h1" size="display" overline="Pricing" title="Simple pricing. Real progress." lead={`Every lesson is 1-to-1 and online. The standard lesson is ${prices.lesson_minutes} minutes${otherLengths ? `, and you can also choose ${otherLengths}minute lessons` : ''}. Your first step is a free ${prices.intro_call_minutes}-minute intro call.`} />
+      {prices.options.length > 1 && (
+        <nav class="lengths" aria-label="Lesson lengths">
+          <span class="t-label-m">Lesson length:</span>
+          {prices.options.map((o) => <a class="tag tag--neutral" href={`#lessons-${o.minutes}`}>{o.minutes} min{o.standard && ' · standard'}</a>)}
+        </nav>
+      )}
+      {prices.options.map((o) => (
+        <div class="length" id={`lessons-${o.minutes}`}>
+          <div class="length__head">
+            <h2 class="t-h2">{o.minutes}-minute lessons</h2>
+            {o.standard && <span class="tag tag--accent-solid">Standard</span>}
+            <p class="t-body-m c-secondary length__blurb">{blurb(o)}</p>
+          </div>
+          <PricingCards headingLevel={3} option={o} />
+        </div>
+      ))}
       <ul class="includes" role="list">
         <li class="t-label-m">Every lesson includes:</li>
         <li><Icon name="target" size={18} />A plan built around your goals</li>
@@ -51,6 +74,11 @@ const faqs = [
   if (new URLSearchParams(location.search).has('focus') && !location.hash) document.getElementById('book')?.scrollIntoView();
 </script>
 <style>
+  .lengths { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px 12px; margin-bottom: 8px; }
+  .lengths a { text-decoration: none; }
+  .length { margin-top: 56px; scroll-margin-top: 96px; }
+  .length__head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-bottom: 24px; }
+  .length__blurb { flex-basis: 100%; }
   .includes { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 28px; margin-top: 40px; color: var(--ff-text-secondary); font: 400 15px/20px var(--ff-font-body); }
   .includes li { display: flex; align-items: center; gap: 8px; }
   .includes :global(svg) { color: var(--ff-icon-brand); }

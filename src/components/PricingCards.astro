@@ -3,12 +3,13 @@
 import Icon from './Icon.astro';
 import Button from './Button.astro';
 import { prices } from '../lib/settings';
-interface Props { headingLevel?: 2 | 3 }
-const { headingLevel = 3 } = Astro.props;
-const H = headingLevel === 2 ? 'h2' : 'h3';
-const [p5, p10] = prices.packs;
+type LessonOption = (typeof prices.options)[number];
+interface Props { headingLevel?: 2 | 3 | 4; option?: LessonOption }
+const { headingLevel = 3, option = prices.options[0] } = Astro.props;
+const H = `h${headingLevel}`;
+const [p5, p10] = option.packs;
 const cards = [
-  { name: 'Single lesson', price: prices.singleLabel, unit: '/ lesson', note: `${prices.lesson_minutes}-minute online lesson`, features: ['Pay as you go', 'Any lesson type', 'Lesson notes after class'], featured: false },
+  { name: 'Single lesson', price: option.singleLabel, unit: '/ lesson', note: `${option.minutes}-minute online lesson`, features: ['Pay as you go', 'Any lesson type', 'Lesson notes after class'], featured: false },
   { name: '5-lesson pack', price: p5.label, unit: '/ 5 lessons', note: `${p5.perLesson} per lesson · save ${p5.saves}`, features: [`Use within ${p5.months} months`, 'Any lesson type', 'Lesson notes after class'], featured: false },
   { name: '10-lesson pack', price: p10.label, unit: '/ 10 lessons', note: `${p10.perLesson} per lesson · save ${p10.saves}`, features: [`Use within ${p10.months} months`, 'Priority scheduling', 'Personal learning plan', 'Lesson notes after every class'], featured: true },
 ];
