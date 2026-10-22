@@ -23,15 +23,17 @@ prices:
   pack_10_valid_months: 6     # how long a 10-pack can be used
   intro_call_minutes: 15      # length of the free intro call
   # Lesson types. Each service below says which type it belongs to.
-  # pack_5 is 10% off five single lessons, pack_10 is 15% off ten.
+  # pack_5 is about 10% off five single lessons, pack_10 about 15% off ten.
+  # Keep pack_5 a multiple of 5 and pack_10 a multiple of 10 so the
+  # per-lesson prices are whole dollars.
   # The "features" lines are the ticks shown on each price card.
   lesson_types:
     - id: general
       name: "General & Conversational English"
       description: "Everyday fluency: conversation practice, vocabulary, grammar correction and pronunciation."
       single: 25
-      pack_5: 112.50
-      pack_10: 212.50
+      pack_5: 110
+      pack_10: 210
       features:
         single: ["Pay as you go", "Conversation on topics you choose", "Lesson notes after class"]
         pack_5: ["Grammar and vocabulary review", "Lesson notes after class"]
@@ -41,7 +43,7 @@ prices:
       description: "English for work: meetings, presentations, job interviews, emails and the vocabulary of your industry."
       single: 30
       pack_5: 135
-      pack_10: 255
+      pack_10: 250
       features:
         single: ["Prep for one meeting, call or interview", "Real work scenarios", "Lesson notes after class"]
         pack_5: ["Email and writing feedback", "Vocabulary for your industry"]
@@ -50,8 +52,8 @@ prices:
       name: "Exam Preparation (IELTS, TOEFL, Cambridge)"
       description: "Structured test strategies, speaking practice with feedback, and essay correction for your exam."
       single: 35
-      pack_5: 157.50
-      pack_10: 297.50
+      pack_5: 155
+      pack_10: 290
       features:
         single: ["One speaking or writing section", "Feedback on your answers", "Lesson notes after class"]
         pack_5: ["Strategies for every section", "Essay feedback"]
