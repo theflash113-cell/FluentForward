@@ -6,11 +6,11 @@ This is Kyle's English teaching website. It's built with [Astro](https://astro.b
 
 | What you want to do | File to edit |
 |---|---|
-| Change prices, pack validity or the intro call length | `src/content/settings.yaml` → `prices` |
+| Change prices, lesson types, pack validity or the intro call length | `src/content/settings.yaml` → `prices` |
 | Change your WhatsApp number, email, Instagram, YouTube video or Preply link | `src/content/settings.yaml` → `contact` |
 | Add your Google Calendar booking link | `src/content/settings.yaml` → `booking: google_calendar_link` |
 | Turn on visitor stats (Cloudflare) | `src/content/settings.yaml` → `analytics: cloudflare_token` |
-| Edit services or booking choices | `src/content/settings.yaml` → `services` |
+| Edit services or booking choices (and which lesson type each is priced as) | `src/content/settings.yaml` → `services` |
 | Add a real review | `src/content/settings.yaml` → `reviews` |
 | Write a blog post | Copy `src/content/blog/_TEMPLATE.md` |
 | Add a free resource (PDF) | Upload the PDF to `public/resources/`, then copy `src/content/resources/_TEMPLATE.md` |

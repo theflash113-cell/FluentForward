@@ -6,40 +6,37 @@ import PricingCards from '../components/PricingCards.astro';
 import BookingForm from '../components/BookingForm.astro';
 import { prices, booking } from '../lib/settings';
 const [p5, p10] = prices.packs;
-const otherLengths = prices.otherMinutes.map((m) => `${m}-`).join(' and ');
-const blurbs: Record<number, string> = {
-  30: 'A short, focused lesson. Good for busy weeks, quick speaking practice or one small topic.',
-  50: 'My regular lesson. Enough time to learn something new, practice it and review.',
-  80: 'A long lesson for deep work: exam practice, presentations, interviews or intensive speaking.',
-};
-const blurb = (o: (typeof prices.options)[number]) =>
-  blurbs[o.minutes] ?? (o.minutes < prices.lesson_minutes ? 'A shorter lesson for focused practice.' : 'A longer lesson with extra time for practice.');
+const singles = prices.types.map((t) => `${t.singleLabel} for ${t.name}`);
+const list = (xs: string[]) => (xs.length > 1 ? `${xs.slice(0, -1).join(', ')} and ${xs[xs.length - 1]}` : xs[0]);
 const faqs = [
   ['What happens in the free intro call?', `We meet for ${prices.intro_call_minutes} minutes, check your level, talk about your goals and plan your first lesson. No payment needed.`],
+  ['Which price is right for me?', `It depends on what you want to learn. Every lesson is ${prices.lesson_minutes} minutes: ${list(singles)}. Not sure? We'll choose together in your free intro call.`],
   ['Where do lessons happen?', 'Online, by video call. You get the link in your calendar invite. Group classes happen in person in Istanbul.'],
   ['How do I pay?', "After your free intro call, I'll send you a payment link or bank details for your lesson or package. Nothing is charged when you book."],
   ['Can I change a lesson time?', `Yes. Reschedule or cancel for free up to ${booking.cancellation_notice_hours} hours before the lesson. Later changes count as a used lesson.`],
   ['How long can I use a lesson pack?', `The 5-lesson pack is valid for ${p5.months} months and the 10-lesson pack for ${p10.months} months from purchase. Unused lessons can't be refunded, but if something big comes up, just message me.`],
 ];
 ---
-<Base title="Pricing & booking" description={`Simple pricing: ${prices.singleLabel} per ${prices.lesson_minutes}-minute lesson${otherLengths ? `, with ${otherLengths}minute lessons too` : ''}. Save with 5- and 10-lesson packs. Book a free ${prices.intro_call_minutes}-minute intro call in 4 quick steps.`}>
+<Base title="Pricing & booking" description={`Simple pricing: ${prices.lesson_minutes}-minute lessons from ${prices.fromLabel}, priced by lesson type: general, business or exam prep. Save with 5- and 10-lesson packs. Book a free ${prices.intro_call_minutes}-minute intro call in 4 quick steps.`}>
   <section class="section section--surface">
     <div class="container">
-      <SectionHead as="h1" size="display" overline="Pricing" title="Simple pricing. Real progress." lead={`Every lesson is 1-to-1 and online. The standard lesson is ${prices.lesson_minutes} minutes${otherLengths ? `, and you can also choose ${otherLengths}minute lessons` : ''}. Your first step is a free ${prices.intro_call_minutes}-minute intro call.`} />
-      {prices.options.length > 1 && (
-        <nav class="lengths" aria-label="Lesson lengths">
-          <span class="t-label-m">Lesson length:</span>
-          {prices.options.map((o) => <a class="tag tag--neutral" href={`#lessons-${o.minutes}`}>{o.minutes} min{o.standard && ' · standard'}</a>)}
-        </nav>
-      )}
-      {prices.options.map((o) => (
-        <div class="length" id={`lessons-${o.minutes}`}>
-          <div class="length__head">
-            <h2 class="t-h2">{o.minutes}-minute lessons</h2>
-            {o.standard && <span class="tag tag--accent-solid">Standard</span>}
-            <p class="t-body-m c-secondary length__blurb">{blurb(o)}</p>
+      <SectionHead as="h1" size="display" overline="Pricing" title="Simple pricing. Real progress." lead={`Every lesson is 1-to-1, online and ${prices.lesson_minutes} minutes long. Prices depend on what you want to learn. Your first step is a free ${prices.intro_call_minutes}-minute intro call.`} />
+      <nav class="types" aria-label="Lesson types">
+        <span class="t-label-m">Lesson type:</span>
+        {prices.types.map((t) => <a class="tag tag--neutral" href={`#lessons-${t.id}`}>{t.name} · from {t.singleLabel}</a>)}
+      </nav>
+      {prices.types.map((t) => (
+        <div class="type" id={`lessons-${t.id}`}>
+          <div class="type__head">
+            <h2 class="t-h2">{t.name}</h2>
+            <p class="t-body-m c-secondary type__blurb">{t.description}</p>
+            {t.services.length > 0 && (
+              <ul class="type__svcs" role="list" aria-label={`Lessons priced as ${t.name}`}>
+                {t.services.map((s) => <li class="tag tag--brand">{s.name}</li>)}
+              </ul>
+            )}
           </div>
-          <PricingCards headingLevel={3} option={o} />
+          <PricingCards headingLevel={3} type={t} />
         </div>
       ))}
       <ul class="includes" role="list">
@@ -74,11 +71,11 @@ const faqs = [
   if (new URLSearchParams(location.search).has('focus') && !location.hash) document.getElementById('book')?.scrollIntoView();
 </script>
 <style>
-  .lengths { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px 12px; margin-bottom: 8px; }
-  .lengths a { text-decoration: none; }
-  .length { margin-top: 56px; scroll-margin-top: 96px; }
-  .length__head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-bottom: 24px; }
-  .length__blurb { flex-basis: 100%; }
+  .types { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px 12px; margin-bottom: 8px; }
+  .types a { text-decoration: none; }
+  .type { margin-top: 56px; scroll-margin-top: 96px; }
+  .type__head { display: grid; gap: 8px; margin-bottom: 24px; }
+  .type__svcs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
   .includes { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 28px; margin-top: 40px; color: var(--ff-text-secondary); font: 400 15px/20px var(--ff-font-body); }
   .includes li { display: flex; align-items: center; gap: 8px; }
   .includes :global(svg) { color: var(--ff-icon-brand); }

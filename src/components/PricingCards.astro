@@ -3,15 +3,16 @@
 import Icon from './Icon.astro';
 import Button from './Button.astro';
 import { prices } from '../lib/settings';
-type LessonOption = (typeof prices.options)[number];
-interface Props { headingLevel?: 2 | 3 | 4; option?: LessonOption }
-const { headingLevel = 3, option = prices.options[0] } = Astro.props;
+type LessonType = (typeof prices.types)[number];
+interface Props { headingLevel?: 2 | 3 | 4; type?: LessonType }
+const { headingLevel = 3, type = prices.types[0] } = Astro.props;
 const H = `h${headingLevel}`;
-const [p5, p10] = option.packs;
+const [p5, p10] = type.packs;
+const f = type.features;
 const cards = [
-  { name: 'Single lesson', price: option.singleLabel, unit: '/ lesson', note: `${option.minutes}-minute online lesson`, features: ['Pay as you go', 'Any lesson type', 'Lesson notes after class'], featured: false },
-  { name: '5-lesson pack', price: p5.label, unit: '/ 5 lessons', note: `${p5.perLesson} per lesson · save ${p5.saves}`, features: [`Use within ${p5.months} months`, 'Any lesson type', 'Lesson notes after class'], featured: false },
-  { name: '10-lesson pack', price: p10.label, unit: '/ 10 lessons', note: `${p10.perLesson} per lesson · save ${p10.saves}`, features: [`Use within ${p10.months} months`, 'Priority scheduling', 'Personal learning plan', 'Lesson notes after every class'], featured: true },
+  { name: 'Single lesson', price: type.singleLabel, unit: '/ lesson', note: `${prices.lesson_minutes}-minute online lesson`, features: f.single, featured: false },
+  { name: '5-lesson pack', price: p5.label, unit: '/ 5 lessons', note: `${p5.perLesson} per lesson · save ${p5.saves}`, features: [`Use within ${p5.months} months`, ...f.pack_5], featured: false },
+  { name: '10-lesson pack', price: p10.label, unit: '/ 10 lessons', note: `${p10.perLesson} per lesson · save ${p10.saves}`, features: [`Use within ${p10.months} months`, ...f.pack_10], featured: true },
 ];
 ---
 <div class="plans">
@@ -35,7 +36,7 @@ const cards = [
   .plan :global(.btn) { margin-top: auto; }
   .plan__top { display: flex; justify-content: space-between; align-items: center; min-height: 26px; }
   .plan__name { color: var(--ff-text-brand); }
-  .plan__price { display: flex; align-items: baseline; gap: 8px; }
+  .plan__price { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 8px; }
   .plan__amount { font: 800 48px/1 var(--ff-font-display); letter-spacing: -0.02em; }
   .plan__unit, .plan__note { color: var(--ff-text-secondary); }
   .plan--featured { background: var(--ff-bg-inverse); color: #fff; border: 2px solid var(--ff-border-brand); box-shadow: var(--ff-shadow-pop); }

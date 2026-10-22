@@ -15,28 +15,49 @@
 # ── PRICES ───────────────────────────────────────────────────
 # Numbers only (no $ sign). Per-lesson prices and savings are
 # calculated automatically everywhere on the site.
-# The prices directly below are for the standard lesson.
+# Every lesson is 50 minutes. Each lesson type has its own prices.
 prices:
   currency_symbol: "$"
-  lesson_minutes: 50          # length of the standard lesson
-  single: 20                  # price of one standard lesson
-  pack_5: 90                  # price of the 5-lesson pack
-  pack_10: 170                # price of the 10-lesson pack
+  lesson_minutes: 50          # length of every lesson
   pack_5_valid_months: 3      # how long a 5-pack can be used
   pack_10_valid_months: 6     # how long a 10-pack can be used
   intro_call_minutes: 15      # length of the free intro call
-  # Other lesson lengths, each with its own packs.
-  # To add one, copy a block of 4 lines (starting with -).
-  # To remove one, delete its 4 lines.
-  other_lessons:
-    - minutes: 30
-      single: 12
-      pack_5: 54
-      pack_10: 102
-    - minutes: 80
-      single: 32
-      pack_5: 144
-      pack_10: 272
+  # Lesson types. Each service below says which type it belongs to.
+  # pack_5 is about 10% off five single lessons, pack_10 about 15% off ten.
+  # Keep pack_5 a multiple of 5 and pack_10 a multiple of 10 so the
+  # per-lesson prices are whole dollars.
+  # The "features" lines are the ticks shown on each price card.
+  lesson_types:
+    - id: general
+      name: "General & Conversational English"
+      description: "Everyday fluency: conversation practice, vocabulary, grammar correction and pronunciation."
+      single: 25
+      pack_5: 110
+      pack_10: 210
+      features:
+        single: ["Pay as you go", "Conversation on topics you choose", "Lesson notes after class"]
+        pack_5: ["Grammar and vocabulary review", "Lesson notes after class"]
+        pack_10: ["Priority scheduling", "Personal learning plan", "Light homework review", "Lesson notes after every class"]
+    - id: business
+      name: "Business & Professional English"
+      description: "English for work: meetings, presentations, job interviews, emails and the vocabulary of your industry."
+      single: 30
+      pack_5: 135
+      pack_10: 250
+      features:
+        single: ["Prep for one meeting, call or interview", "Real work scenarios", "Lesson notes after class"]
+        pack_5: ["Email and writing feedback", "Vocabulary for your industry"]
+        pack_10: ["Priority scheduling", "Personal plan built around your job", "Mock interviews and presentation rehearsals", "Email and writing feedback"]
+    - id: exam
+      name: "Exam Preparation (IELTS, TOEFL, Cambridge)"
+      description: "Structured test strategies, speaking practice with feedback, and essay correction for your exam."
+      single: 35
+      pack_5: 155
+      pack_10: 290
+      features:
+        single: ["One speaking or writing section", "Feedback on your answers", "Lesson notes after class"]
+        pack_5: ["Strategies for every section", "Essay feedback"]
+        pack_10: ["Priority scheduling", "Study plan up to your test date", "Full speaking mock tests", "Essay feedback every week"]
 
 
 # ── CONTACT ──────────────────────────────────────────────────
@@ -86,43 +107,52 @@ highlights:
 # icon options: briefcase, plane, book, sprout, audio-lines, mic,
 #               chat, target, star, pencil, lightbulb, calendar
 # "booking: false" hides a service from the booking choices.
+# "type" is the lesson type it is priced as: general, business or exam.
 services:
   - id: business
+    type: business
     name: "Business English"
     short: "Meetings, emails, presentations, interviews"
     description: "Meetings, emails, presentations and interviews: the English you need at work."
     icon: briefcase
   - id: travel
+    type: general
     name: "Travel English"
     short: "Airports, hotels, restaurants, small talk"
     description: "Airports, hotels, restaurants and small talk, so you feel ready anywhere."
     icon: plane
   - id: literature
+    type: general
     name: "English Literature"
     short: "Read and discuss books, stories and poems"
     description: "Read real books, stories and poems together to grow your vocabulary and understanding."
     icon: book
   - id: beginner
+    type: general
     name: "Beginner English"
     short: "Start from zero, step by step"
     description: "Start from zero with clear, patient, step-by-step lessons that build real confidence."
     icon: sprout
   - id: accent
+    type: general
     name: "Accent Reduction"
     short: "Sound clearer and more natural"
     description: "Sound clearer and more natural with focused work on rhythm, linking and American sounds."
     icon: audio-lines
   - id: pronunciation
+    type: general
     name: "Pronunciation Coaching"
     short: "Sounds, word stress and intonation"
     description: "Master tricky sounds, word stress and intonation so people understand you the first time."
     icon: mic
   - id: conversation
+    type: general
     name: "Conversation Practice"
     short: "Speak more, freeze less"
     description: "Build fluency and confidence with real conversations on topics you care about."
     icon: chat
   - id: exams
+    type: exam
     name: "Exam Prep"
     short: "IELTS, TOEFL and Cambridge"
     description: "Strategies and practice for IELTS, TOEFL and Cambridge exams."
