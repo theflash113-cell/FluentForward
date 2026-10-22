@@ -1,15 +1,15 @@
 ---
 // Figma: Card/Service (13:315)
 import Icon from './Icon.astro';
-interface Props { id: string; name: string; description: string; icon: string; minutes: number }
-const { id, name, description, icon, minutes } = Astro.props;
+interface Props { id: string; name: string; description: string; icon: string; minutes: number; price?: string }
+const { id, name, description, icon, minutes, price } = Astro.props;
 ---
 <article class="svc">
   <span class="icon-badge"><Icon name={icon} /></span>
   <h3 class="t-h4">{name}</h3>
   <p class="t-body-s c-secondary">{description}</p>
   <div class="svc__foot">
-    <span class="tag tag--neutral">{minutes} min</span>
+    <span class="tag tag--neutral">{price ? `${price} · ` : ''}{minutes} min</span>
     <a class="svc__link t-label-m" href={`/pricing?focus=${id}#book`}>Book this <span class="sr-only">: {name}</span><Icon name="arrow-right" size={16} /></a>
   </div>
 </article>

@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { parse } from 'yaml';
 
-type Service = { id: string; name: string; short: string; description: string; icon: string; booking?: boolean };
+type Service = { id: string; type: string; name: string; short: string; description: string; icon: string; booking?: boolean };
 type Review = { name: string; source: string; stars?: number; date?: string; quote: string; photo?: string };
 
 const raw = parse(fs.readFileSync(path.resolve('src/content/settings.yaml'), 'utf8'));
@@ -10,34 +10,44 @@ const raw = parse(fs.readFileSync(path.resolve('src/content/settings.yaml'), 'ut
 const p = raw.prices;
 const money = (n: number) => `${p.currency_symbol}${Number.isInteger(n) ? n : n.toFixed(2)}`;
 
-type LessonPrices = { minutes: number; single: number; pack_5: number; pack_10: number };
+type LessonTypeRaw = {
+  id: string; name: string; description: string; single: number; pack_5: number; pack_10: number;
+  features: { single: string[]; pack_5: string[]; pack_10: string[] };
+};
 
-const lessonOption = (o: LessonPrices, standard: boolean) => ({
-  minutes: o.minutes,
-  standard,
-  singleLabel: money(o.single),
+export const services: Service[] = raw.services;
+
+const lessonType = (t: LessonTypeRaw) => ({
+  id: t.id,
+  name: t.name,
+  description: t.description,
+  single: t.single,
+  singleLabel: money(t.single),
+  features: t.features,
+  services: services.filter((s) => s.type === t.id),
   packs: [
-    { count: 5, price: o.pack_5, months: p.pack_5_valid_months },
-    { count: 10, price: o.pack_10, months: p.pack_10_valid_months },
+    { count: 5, price: t.pack_5, months: p.pack_5_valid_months },
+    { count: 10, price: t.pack_10, months: p.pack_10_valid_months },
   ].map((pk) => ({
     ...pk,
     label: money(pk.price),
     perLesson: money(Math.round((pk.price / pk.count) * 100) / 100),
-    saves: money(o.single * pk.count - pk.price),
+    saves: money(t.single * pk.count - pk.price),
   })),
 });
 
-const standardLesson = lessonOption({ minutes: p.lesson_minutes, single: p.single, pack_5: p.pack_5, pack_10: p.pack_10 }, true);
-const otherLessons = ((p.other_lessons ?? []) as LessonPrices[]).map((o) => lessonOption(o, false));
+const types = (p.lesson_types as LessonTypeRaw[]).map(lessonType);
+const cheapest = types.reduce((a, b) => (b.single < a.single ? b : a));
 
 export const prices = {
   ...p,
   money,
-  singleLabel: standardLesson.singleLabel,
-  packs: standardLesson.packs,
-  // Standard lesson first, then the other lengths from shortest to longest.
-  options: [standardLesson, ...otherLessons.sort((a, b) => a.minutes - b.minutes)],
-  otherMinutes: otherLessons.map((o) => o.minutes).sort((a, b) => a - b),
+  types,
+  // The lowest single-lesson price, for "from $X" labels.
+  fromLabel: cheapest.singleLabel,
+  // Pack lengths and validity are the same for every lesson type.
+  packs: cheapest.packs,
+  typeOf: (id: string) => types.find((t) => t.id === id),
 };
 
 const c = raw.contact;
@@ -61,7 +71,6 @@ export const booking = raw.booking as {
 
 export const analyticsToken: string = raw.analytics?.cloudflare_token || '';
 export const highlights = raw.highlights as { preply_rating: string; years_teaching: string };
-export const services: Service[] = raw.services;
 export const bookingServices = services.filter((s) => s.booking !== false);
 export const reviews: Review[] = raw.reviews || [];
 
